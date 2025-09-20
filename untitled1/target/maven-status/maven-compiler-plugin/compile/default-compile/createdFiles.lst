@@ -8,6 +8,7 @@ com\enterprise\entity\Role.class
 com\enterprise\service\impl\EmployeeServiceImpl.class
 com\enterprise\entity\Department.class
 com\enterprise\controller\HomeController.class
+com\enterprise\controller\PositionController.class
 com\enterprise\repository\NotificationRepository.class
 com\enterprise\service\UserServiceImpl.class
 com\enterprise\service\impl\NotificationServiceImpl.class

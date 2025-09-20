@@ -417,6 +417,155 @@ function closeModal() {
     document.getElementById('modal').style.display = 'none';
 }
 
+// 添加员工模态框
+function showAddEmployeeModal() {
+    const content = `
+        <form id="addEmployeeForm">
+            <div class="form-group">
+                <label for="empName">员工姓名:</label>
+                <input type="text" id="empName" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="empId">员工编号:</label>
+                <input type="text" id="empId" name="employeeId" required>
+            </div>
+            <div class="form-group">
+                <label for="empGender">性别:</label>
+                <select id="empGender" name="gender" required>
+                    <option value="">请选择</option>
+                    <option value="MALE">男</option>
+                    <option value="FEMALE">女</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="empDept">部门:</label>
+                <select id="empDept" name="departmentId" required>
+                    <option value="">请选择部门</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="empPosition">职位:</label>
+                <select id="empPosition" name="positionId" required>
+                    <option value="">请选择职位</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="empHireDate">入职日期:</label>
+                <input type="date" id="empHireDate" name="hireDate" required>
+            </div>
+            <div style="text-align: right; margin-top: 20px;">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+                <button type="submit" class="btn btn-success">添加</button>
+            </div>
+        </form>
+    `;
+    
+    showModal('添加员工', content);
+    
+    // 加载部门和职位选项
+    loadDepartmentOptions();
+    loadPositionOptions();
+    
+    document.getElementById('addEmployeeForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const employeeData = {
+            name: formData.get('name'),
+            employeeId: formData.get('employeeId'),
+            gender: formData.get('gender'),
+            departmentId: parseInt(formData.get('departmentId')),
+            positionId: parseInt(formData.get('positionId')),
+            hireDate: formData.get('hireDate'),
+            status: 'ACTIVE'
+        };
+        
+        try {
+            const response = await fetch(`${API_BASE}/employees`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(employeeData)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                closeModal();
+                loadEmployees();
+            } else {
+                alert(result.message);
+            }
+        } catch (error) {
+            alert('添加员工失败');
+            console.error('Add employee error:', error);
+        }
+    });
+}
+
+// 添加通知模态框
+function showAddNotificationModal() {
+    const content = `
+        <form id="addNotificationForm">
+            <div class="form-group">
+                <label for="notifTitle">通知标题:</label>
+                <input type="text" id="notifTitle" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="notifContent">通知内容:</label>
+                <textarea id="notifContent" name="content" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="notifType">通知类型:</label>
+                <select id="notifType" name="type" required>
+                    <option value="">请选择</option>
+                    <option value="INFO">信息</option>
+                    <option value="WARNING">警告</option>
+                    <option value="ERROR">错误</option>
+                </select>
+            </div>
+            <div style="text-align: right; margin-top: 20px;">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+                <button type="submit" class="btn btn-success">添加</button>
+            </div>
+        </form>
+    `;
+    
+    showModal('添加通知', content);
+    
+    document.getElementById('addNotificationForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const notificationData = {
+            title: formData.get('title'),
+            content: formData.get('content'),
+            type: formData.get('type')
+        };
+        
+        try {
+            const response = await fetch(`${API_BASE}/notifications`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(notificationData)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                closeModal();
+                loadNotifications();
+            } else {
+                alert(result.message);
+            }
+        } catch (error) {
+            alert('添加通知失败');
+            console.error('Add notification error:', error);
+        }
+    });
+}
+
 // 添加部门模态框
 function showAddDepartmentModal() {
     const content = `
@@ -561,6 +710,46 @@ function logout() {
         currentUser = null;
         localStorage.removeItem('currentUser');
         showLoginForm();
+    }
+}
+
+// 加载部门选项
+async function loadDepartmentOptions() {
+    try {
+        const response = await fetch(`${API_BASE}/departments`);
+        const departments = await response.json();
+        
+        const deptSelect = document.getElementById('empDept');
+        deptSelect.innerHTML = '<option value="">请选择部门</option>';
+        
+        departments.forEach(dept => {
+            const option = document.createElement('option');
+            option.value = dept.id;
+            option.textContent = dept.name;
+            deptSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Load departments error:', error);
+    }
+}
+
+// 加载职位选项
+async function loadPositionOptions() {
+    try {
+        const response = await fetch(`${API_BASE}/positions`);
+        const positions = await response.json();
+        
+        const posSelect = document.getElementById('empPosition');
+        posSelect.innerHTML = '<option value="">请选择职位</option>';
+        
+        positions.forEach(pos => {
+            const option = document.createElement('option');
+            option.value = pos.id;
+            option.textContent = pos.name;
+            posSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Load positions error:', error);
     }
 }
 

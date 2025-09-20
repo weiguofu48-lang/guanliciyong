@@ -114,6 +114,13 @@ CREATE TABLE t_employee_movement (
     CONSTRAINT fk_movement_employee FOREIGN KEY (employee_id) REFERENCES t_employee(id)
 );
 
+-- Create t_notification table
+CREATE TABLE IF NOT EXISTS t_notification (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Insert example employee data (updated to use position_id)
 INSERT INTO t_employee (employee_id, name, gender, hire_date, position_id, status, department_id)
 SELECT * FROM (SELECT 'E001', '王五', 'MALE', '2023-01-15', (SELECT id FROM t_position WHERE name = '软件工程师'), 'REGULAR', (SELECT id FROM t_department WHERE name = '研发部')) AS tmp

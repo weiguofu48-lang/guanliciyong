@@ -31,10 +31,17 @@ public class NotificationController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> createNotification(@RequestBody Notification notification) {
+    public ResponseEntity<Map<String, Object>> createNotification(@RequestBody Map<String, String> notificationData) {
         Map<String, Object> response = new HashMap<>();
         try {
-            notificationService.createNotification(notification.getMessage());
+            String title = notificationData.get("title");
+            String content = notificationData.get("content");
+            String type = notificationData.get("type");
+            
+            // Create a formatted message with title, content, and type
+            String message = String.format("[%s] %s: %s", type, title, content);
+            notificationService.createNotification(message);
+            
             response.put("success", true);
             response.put("message", "通知创建成功");
             return ResponseEntity.ok(response);
