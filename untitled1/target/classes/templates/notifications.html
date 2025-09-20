@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Notifications</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Notifications</h1>
+
+        <div sec:authorize="isAuthenticated()">
+            <p>Welcome, <span sec:authentication="name"></span>!</p>
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Sign Out" class="btn"/>
+            </form>
+        </div>
+
+        <h2>All Notifications</h2>
+        <div th:if="${notifications.isEmpty()}">
+            <p>No notifications yet.</p>
+        </div>
+        <div th:unless="${notifications.isEmpty()}">
+            <ul class="notification-list">
+                <li class="notification-item" th:each="notification : ${notifications}">
+                    <p th:text="${notification.message}"></p>
+                    <small th:text="${#temporals.format(notification.createdAt, 'yyyy-MM-dd HH:mm')}"></small>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Removed sec:authorize for Create New Notification form -->
+        <div class="notification-form">
+            <h2>Create New Notification</h2>
+            <form th:action="@{/notifications}" method="post">
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="4" required></textarea>
+                </div>
+                <input type="submit" value="Create Notification" class="btn">
+            </form>
+        </div>
+
+        <p><a href="/home">Back to Home</a></p>
+    </div>
+</body>
+</html>

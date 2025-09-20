@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Department</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Add New Department</h1>
+
+        <form th:action="@{/departments/add}" th:object="${newDepartment}" method="post">
+            <div class="form-group">
+                <label for="name">Department Name:</label>
+                <input type="text" id="name" name="name" th:field="*{name}" required/>
+            </div>
+            <button type="submit" class="btn">Add Department</button>
+        </form>
+
+        <p style="margin-top: 20px;"><a href="/departments">Back to Department List</a></p>
+        <p><a href="/home">Back to Home</a></p>
+    </div>
+</body>
+</html>

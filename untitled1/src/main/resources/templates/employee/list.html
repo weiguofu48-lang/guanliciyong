@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee List</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Employee List</h1>
+        
+        <p><a th:href="@{/employees/add}" class="btn">Add New Employee</a></p>
+
+        <table th:if="${employees != null and not employees.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Hire Date</th>
+                    <th>Position</th>
+                    <th>Status</th>
+                    <th>Department</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="employee : ${employees}">
+                    <td th:text="${employee.employeeId}"></td>
+                    <td th:text="${employee.name}"></td>
+                    <td th:text="${employee.gender.displayName}"></td>
+                    <td th:text="${employee.hireDate}"></td>
+                    <td th:text="${employee.position.name}"></td>
+                    <td th:text="${employee.status.displayName}"></td>
+                    <td th:text="${employee.department.name}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div th:if="${employees == null or employees.isEmpty()}">
+            <p style="color: red; font-weight: bold;">No employee information found in the database.</p>
+        </div>
+        <p><a th:href="@{/home}">Back to Home</a></p>
+    </div>
+</body>
+</html>

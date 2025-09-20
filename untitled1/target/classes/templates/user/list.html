@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <h1>User Management</h1>
+
+        <!-- Success Message -->
+        <div th:if="${successMessage}" class="alert alert-success">
+            <p th:text="${successMessage}"></p>
+        </div>
+
+        <!-- Error Message -->
+        <div th:if="${errorMessage}" class="alert alert-danger">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        <p><a th:href="@{/register}" class="btn">Add New User</a></p>
+
+        <!-- Container for the dynamic user list -->
+        <div id="user-list-container">
+            <p>Loading user list...</p>
+        </div>
+
+        <p style="margin-top: 20px;"><a th:href="@{/home}">Back to Home</a></p>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            // This script now ONLY loads the user list content.
+            // All other AJAX calls have been removed.
+            $("#user-list-container").load(/*[[@{/users/content}]]*/, function(response, status, xhr) {
+                if (status == "error") {
+                    $(this).html("<p style='color: red;'>Failed to load user list: " + xhr.status + " " + xhr.statusText + "</p>");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

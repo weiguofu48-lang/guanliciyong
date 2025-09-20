@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome!</h1>
+        <p>You have successfully logged in.</p>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard-container">
+            <p>Loading dashboard...</p>
+        </div>
+
+        <hr>
+
+        <p><a th:href="@{/notifications}">View Notifications</a></p>
+        <p><a th:href="@{/employees}">View Employees</a></p>
+        <p><a th:href="@{/departments}">Manage Departments</a></p>
+        
+        <form th:action="@{/logout}" method="post" style="margin-top: 20px;">
+            <input type="submit" value="Sign Out" class="btn"/>
+        </form>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Load dashboard content via AJAX, including the context path
+            $("#dashboard-container").load("/untitled1/dashboard/content", function(response, status, xhr) {
+                if (status == "error") {
+                    var msg = "加载失败: ";
+                    $(this).html("<p style='color: red;'>" + msg + xhr.status + " " + xhr.statusText + "</p>");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

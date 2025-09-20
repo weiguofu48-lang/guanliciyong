@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Employee</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Add New Employee</h1>
+
+        <form th:action="@{/employees/add}" th:object="${employee}" method="post">
+            <div class="form-group">
+                <label for="employeeId">Employee ID:</label>
+                <input type="text" id="employeeId" th:field="*{employeeId}" required/>
+            </div>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" th:field="*{name}" required/>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" th:field="*{gender}" required>
+                    <option th:each="g : ${genders}" th:value="${g}" th:text="${g.displayName}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="hireDate">Hire Date:</label>
+                <input type="date" id="hireDate" th:field="*{hireDate}" required/>
+            </div>
+            <div class="form-group">
+                <label for="department">Department:</label>
+                <select id="department" th:field="*{department}" required>
+                    <option th:each="dept : ${departments}" th:value="${dept.id}" th:text="${dept.name}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="position">Position:</label>
+                <select id="position" th:field="*{position}" required>
+                    <option th:each="pos : ${positions}" th:value="${pos.id}" th:text="${pos.name}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select id="status" th:field="*{status}" required>
+                    <option th:each="s : ${statuses}" th:value="${s}" th:text="${s.displayName}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Save Employee</button>
+        </form>
+
+        <p style="margin-top: 20px;"><a th:href="@{/employees}">Back to Employee List</a></p>
+    </div>
+</body>
+</html>
