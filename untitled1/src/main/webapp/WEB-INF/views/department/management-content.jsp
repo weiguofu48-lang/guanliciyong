@@ -101,7 +101,8 @@
                     <td>${dept.id}</td>
                     <td>${dept.name}</td>
                     <td class="action-buttons">
-                        <a href="<c:url value='/departments/delete/${dept.id}'/>">删除</a>
+                        <a href="<c:url value='/departments/edit/${dept.id}'/>" class="btn btn-secondary btn-sm">编辑</a>
+                        <a href="<c:url value='/departments/delete/${dept.id}'/>" class="btn btn-danger btn-sm" onclick="return confirm('确定要删除这个部门吗？');">删除</a>
                     </td>
                 </tr>
             </c:forEach>

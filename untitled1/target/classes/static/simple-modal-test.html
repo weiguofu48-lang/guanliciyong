@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简单模态框测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-btn {
+            padding: 15px 30px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .test-btn:hover {
+            background: #0056b3;
+        }
+        
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        
+        .modal-content {
+            background: #fff;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            background: #f8f9fa;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: #333;
+        }
+        
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .close:hover {
+            color: #333;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            background: #f8f9fa;
+            border-radius: 0 0 10px 10px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.8;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 简单模态框按钮测试</h1>
+    
+    <div class="status">
+        ✅ 这个页面使用内联CSS，不依赖外部文件，可以确保按钮样式正确显示
+    </div>
+    
+    <button class="test-btn" onclick="showAddEmployeeModal()">测试添加员工</button>
+    <button class="test-btn" onclick="showAddUserModal()">测试添加用户</button>
+    <button class="test-btn" onclick="showEditModal()">测试编辑功能</button>
+    
+    <div id="status"></div>
+    
+    <!-- 模态框 -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">标题</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody">
+                内容
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                按钮区域
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function updateStatus(message) {
+            document.getElementById('status').innerHTML = '<div class="status">' + message + '</div>';
+        }
+        
+        function showAddEmployeeModal() {
+            updateStatus('🔄 正在显示添加员工模态框...');
+            
+            document.getElementById('modalTitle').textContent = '添加员工';
+            
+            document.getElementById('modalBody').innerHTML = `
+                <div class="form-group">
+                    <label for="empName">员工姓名:</label>
+                    <input type="text" id="empName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="empId">员工编号:</label>
+                    <input type="text" id="empId" name="employeeId" required>
+                </div>
+                <div class="form-group">
+                    <label for="empGender">性别:</label>
+                    <select id="empGender" name="gender" required>
+                        <option value="">请选择</option>
+                        <option value="MALE">男</option>
+                        <option value="FEMALE">女</option>
+                    </select>
+                </div>
+            `;
+            
+            document.getElementById('modalFooter').innerHTML = `
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+                <button type="button" class="btn btn-success" onclick="handleAddEmployee()">添加</button>
+            `;
+            
+            document.getElementById('modal').style.display = 'block';
+            updateStatus('✅ 添加员工模态框已显示，应该能看到"取消"和"添加"按钮');
+        }
+        
+        function showAddUserModal() {
+            updateStatus('🔄 正在显示添加用户模态框...');
+            
+            document.getElementById('modalTitle').textContent = '添加用户';
+            
+            document.getElementById('modalBody').innerHTML = `
+                <div class="form-group">
+                    <label for="userName">用户名:</label>
+                    <input type="text" id="userName" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">密码:</label>
+                    <input type="password" id="userPassword" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="userRealName">真实姓名:</label>
+                    <input type="text" id="userRealName" name="realName" required>
+                </div>
+            `;
+            
+            document.getElementById('modalFooter').innerHTML = `
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+                <button type="button" class="btn btn-success" onclick="handleAddUser()">添加</button>
+            `;
+            
+            document.getElementById('modal').style.display = 'block';
+            updateStatus('✅ 添加用户模态框已显示，应该能看到"取消"和"添加"按钮');
+        }
+        
+        function showEditModal() {
+            updateStatus('🔄 正在显示编辑模态框...');
+            
+            document.getElementById('modalTitle').textContent = '编辑员工';
+            
+            document.getElementById('modalBody').innerHTML = `
+                <div class="form-group">
+                    <label for="editName">员工姓名:</label>
+                    <input type="text" id="editName" name="name" value="张三" required>
+                </div>
+                <div class="form-group">
+                    <label for="editId">员工编号:</label>
+                    <input type="text" id="editId" name="employeeId" value="EMP001" required>
+                </div>
+            `;
+            
+            document.getElementById('modalFooter').innerHTML = `
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+                <button type="button" class="btn btn-success" onclick="handleEdit()">保存</button>
+            `;
+            
+            document.getElementById('modal').style.display = 'block';
+            updateStatus('✅ 编辑模态框已显示，应该能看到"取消"和"保存"按钮');
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            updateStatus('✅ 模态框已关闭');
+        }
+        
+        function handleAddEmployee() {
+            const name = document.getElementById('empName').value;
+            const id = document.getElementById('empId').value;
+            const gender = document.getElementById('empGender').value;
+            
+            if (name && id && gender) {
+                alert('✅ 员工添加成功！\n姓名: ' + name + '\n编号: ' + id + '\n性别: ' + gender);
+                closeModal();
+            } else {
+                alert('❌ 请填写所有必填字段');
+            }
+        }
+        
+        function handleAddUser() {
+            const username = document.getElementById('userName').value;
+            const password = document.getElementById('userPassword').value;
+            const realName = document.getElementById('userRealName').value;
+            
+            if (username && password && realName) {
+                alert('✅ 用户添加成功！\n用户名: ' + username + '\n真实姓名: ' + realName);
+                closeModal();
+            } else {
+                alert('❌ 请填写所有必填字段');
+            }
+        }
+        
+        function handleEdit() {
+            const name = document.getElementById('editName').value;
+            const id = document.getElementById('editId').value;
+            
+            if (name && id) {
+                alert('✅ 员工编辑成功！\n姓名: ' + name + '\n编号: ' + id);
+                closeModal();
+            } else {
+                alert('❌ 请填写所有必填字段');
+            }
+        }
+        
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatus('✅ 测试页面已加载，请点击上面的按钮测试模态框');
+            console.log('简单模态框测试页面已加载');
+        });
+    </script>
+</body>
+</html>
+

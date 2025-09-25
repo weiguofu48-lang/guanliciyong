@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户信息测试</title>
+</head>
+<body>
+    <h1>用户信息测试</h1>
+    <div id="userInfo"></div>
+    <button onclick="setTestUser()">设置测试用户</button>
+    <button onclick="clearUser()">清除用户信息</button>
+    <button onclick="checkUser()">检查用户信息</button>
+    
+    <script>
+        function setTestUser() {
+            const testUser = {
+                id: 1,
+                username: 'admin',
+                realName: '系统管理员',
+                email: 'admin@enterprise.com',
+                phone: '13800138000'
+            };
+            localStorage.setItem('currentUser', JSON.stringify(testUser));
+            console.log('已设置测试用户:', testUser);
+            checkUser();
+        }
+        
+        function clearUser() {
+            localStorage.removeItem('currentUser');
+            console.log('已清除用户信息');
+            checkUser();
+        }
+        
+        function checkUser() {
+            const userStr = localStorage.getItem('currentUser');
+            const userInfoDiv = document.getElementById('userInfo');
+            
+            if (userStr) {
+                try {
+                    const user = JSON.parse(userStr);
+                    userInfoDiv.innerHTML = `
+                        <h3>当前用户信息:</h3>
+                        <p>ID: ${user.id}</p>
+                        <p>用户名: ${user.username}</p>
+                        <p>真实姓名: ${user.realName}</p>
+                        <p>邮箱: ${user.email || 'N/A'}</p>
+                        <p>电话: ${user.phone || 'N/A'}</p>
+                        <p>原始数据: ${userStr}</p>
+                    `;
+                } catch (e) {
+                    userInfoDiv.innerHTML = `<p>解析用户信息失败: ${e.message}</p>`;
+                }
+            } else {
+                userInfoDiv.innerHTML = '<p>没有找到用户信息</p>';
+            }
+        }
+        
+        // 页面加载时检查用户信息
+        document.addEventListener('DOMContentLoaded', function() {
+            checkUser();
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模态框调试页面</title>
+    <link rel="stylesheet" href="/untitled1/static/css/style.css">
+    <style>
+        .debug-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .debug-btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        .debug-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        .debug-info {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .debug-info h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .debug-info p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-container">
+        <h1>🔧 模态框按钮调试页面</h1>
+        
+        <div class="debug-info">
+            <h3>📋 调试步骤</h3>
+            <p>1. 点击下面的测试按钮</p>
+            <p>2. 检查模态框是否正确显示</p>
+            <p>3. 检查按钮文字是否正确</p>
+            <p>4. 检查按钮功能是否正常</p>
+        </div>
+        
+        <div class="debug-info">
+            <h3>🧪 测试按钮</h3>
+            <button class="debug-btn" onclick="testAddEmployee()">测试添加员工</button>
+            <button class="debug-btn" onclick="testAddUser()">测试添加用户</button>
+            <button class="debug-btn" onclick="testAddDepartment()">测试添加部门</button>
+            <button class="debug-btn" onclick="testEditEmployee()">测试编辑员工</button>
+        </div>
+        
+        <div class="debug-info">
+            <h3>📊 调试信息</h3>
+            <div id="debugStatus">等待测试...</div>
+        </div>
+        
+        <div class="debug-info">
+            <h3>🔍 检查清单</h3>
+            <p>✅ 模态框是否弹出？</p>
+            <p>✅ 模态框标题是否正确？</p>
+            <p>✅ 表单内容是否显示？</p>
+            <p>✅ 底部是否有按钮？</p>
+            <p>✅ 按钮文字是否正确？</p>
+            <p>✅ 按钮颜色是否正确？</p>
+            <p>✅ 点击按钮是否有响应？</p>
+        </div>
+    </div>
+    
+    <!-- 模态框 -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+    
+    <script>
+        // 调试信息显示
+        function updateDebugStatus(message, type = 'success') {
+            const statusDiv = document.getElementById('debugStatus');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+        
+        // 模态框函数 - 使用最新的实现
+        function showModal(title, formContent, formId, submitHandler, buttonText = '保存') {
+            console.log('showModal called with:', { title, formId, buttonText });
+            
+            const modal = document.getElementById('modal');
+            const modalBody = document.getElementById('modalBody');
+            
+            if (!modal || !modalBody) {
+                updateDebugStatus('❌ 错误：找不到模态框元素', 'error');
+                return;
+            }
+            
+            modalBody.innerHTML = `
+                <div class="modal-header">
+                    <h3>${title}</h3>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="${formId}">${formContent}</form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+                    <button type="submit" form="${formId}" class="btn btn-success">${buttonText}</button>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+            
+            // 添加事件监听器
+            const form = document.getElementById(formId);
+            if (form) {
+                form.addEventListener('submit', submitHandler);
+                updateDebugStatus(`✅ 模态框已显示：${title}，按钮文字：${buttonText}`, 'success');
+            } else {
+                updateDebugStatus('❌ 错误：找不到表单元素', 'error');
+            }
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            if (modal) {
+                modal.style.display = 'none';
+                updateDebugStatus('✅ 模态框已关闭', 'success');
+            }
+        }
+        
+        // 测试函数
+        function testAddEmployee() {
+            updateDebugStatus('🔄 正在测试添加员工...', 'success');
+            
+            const formContent = `
+                <div class="form-group">
+                    <label for="empName">员工姓名:</label>
+                    <input type="text" id="empName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="empId">员工编号:</label>
+                    <input type="text" id="empId" name="employeeId" required>
+                </div>
+                <div class="form-group">
+                    <label for="empGender">性别:</label>
+                    <select id="empGender" name="gender" required>
+                        <option value="">请选择</option>
+                        <option value="MALE">男</option>
+                        <option value="FEMALE">女</option>
+                    </select>
+                </div>
+            `;
+            
+            showModal('添加员工', formContent, 'addEmployeeForm', handleAddEmployee, '添加');
+        }
+        
+        function testAddUser() {
+            updateDebugStatus('🔄 正在测试添加用户...', 'success');
+            
+            const formContent = `
+                <div class="form-group">
+                    <label for="userName">用户名:</label>
+                    <input type="text" id="userName" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">密码:</label>
+                    <input type="password" id="userPassword" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="userRealName">真实姓名:</label>
+                    <input type="text" id="userRealName" name="realName" required>
+                </div>
+            `;
+            
+            showModal('添加用户', formContent, 'addUserForm', handleAddUser, '添加');
+        }
+        
+        function testAddDepartment() {
+            updateDebugStatus('🔄 正在测试添加部门...', 'success');
+            
+            const formContent = `
+                <div class="form-group">
+                    <label for="deptName">部门名称:</label>
+                    <input type="text" id="deptName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="deptDesc">描述:</label>
+                    <textarea id="deptDesc" name="description" rows="4"></textarea>
+                </div>
+            `;
+            
+            showModal('添加部门', formContent, 'addDepartmentForm', handleAddDepartment, '添加');
+        }
+        
+        function testEditEmployee() {
+            updateDebugStatus('🔄 正在测试编辑员工...', 'success');
+            
+            const formContent = `
+                <div class="form-group">
+                    <label for="empName">员工姓名:</label>
+                    <input type="text" id="empName" name="name" value="张三" required>
+                </div>
+                <div class="form-group">
+                    <label for="empId">员工编号:</label>
+                    <input type="text" id="empId" name="employeeId" value="EMP001" required>
+                </div>
+            `;
+            
+            showModal('编辑员工', formContent, 'editEmployeeForm', handleEditEmployee);
+        }
+        
+        // 处理函数
+        function handleAddEmployee(e) {
+            e.preventDefault();
+            alert('✅ 员工添加成功！');
+            closeModal();
+        }
+        
+        function handleAddUser(e) {
+            e.preventDefault();
+            alert('✅ 用户添加成功！');
+            closeModal();
+        }
+        
+        function handleAddDepartment(e) {
+            e.preventDefault();
+            alert('✅ 部门添加成功！');
+            closeModal();
+        }
+        
+        function handleEditEmployee(e) {
+            e.preventDefault();
+            alert('✅ 员工编辑成功！');
+            closeModal();
+        }
+        
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDebugStatus('✅ 调试页面已加载，请点击测试按钮', 'success');
+            console.log('模态框调试页面已加载');
+        });
+    </script>
+</body>
+</html>
+

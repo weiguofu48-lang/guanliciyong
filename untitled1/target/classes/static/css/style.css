@@ -329,6 +329,10 @@ body::before {
     padding: 8px 16px;
     margin: 0 5px;
     font-size: 14px;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    color: white !important;
+    font-weight: 500;
 }
 
 .page-header {
@@ -450,12 +454,12 @@ body::before {
 
 .modal-content {
     background: #fff;
-    margin: 5% auto;
+    margin: 2% auto;
     padding: 0;
     border-radius: 20px;
     width: 95%;
-    max-width: 600px; /* Reduced max-width for a more compact look */
-    max-height: 90vh;
+    max-width: 800px; /* Increased max-width for better content display */
+    max-height: 95vh; /* Increased max-height for better space utilization */
     display: flex;
     flex-direction: column;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
@@ -496,6 +500,30 @@ body::before {
 .modal-body {
     padding: 30px;
     overflow-y: auto;
+    flex: 1; /* Allow modal-body to take remaining space */
+    min-height: 0; /* Allow flex item to shrink */
+    max-height: calc(95vh - 140px); /* Reserve space for header and footer */
+    /* Custom scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: #667eea #f1f1f1;
+}
+
+.modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: #5a6fd8;
 }
 
 .modal-footer {
@@ -511,6 +539,46 @@ body::before {
     width: auto;
     padding: 12px 25px;
     font-size: 16px;
+    text-transform: none;
+    letter-spacing: normal;
+    color: white;
+    font-weight: 500;
+}
+
+/* 岗位管理样式 */
+.position-item {
+    transition: all 0.3s ease;
+}
+
+.position-item:hover {
+    background-color: #f8f9fa;
+    border-color: #007bff !important;
+}
+
+.position-count {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 3px;
+    text-transform: none;
+    letter-spacing: normal;
+    color: white;
+    font-weight: 500;
 }
 
 /* Other components */
@@ -607,6 +675,33 @@ body::before {
         margin-bottom: 0;
         text-align: left;
         font-size: 1.4rem;
+    }
+    
+    /* Mobile modal adjustments */
+    .modal-content {
+        margin: 1% auto;
+        width: 98%;
+        max-height: 98vh;
+        border-radius: 15px;
+    }
+    
+    .modal-body {
+        padding: 20px;
+        max-height: calc(98vh - 120px);
+    }
+    
+    .modal-header {
+        padding: 20px;
+    }
+    
+    .modal-footer {
+        padding: 15px 20px;
+        flex-direction: column;
+    }
+    
+    .modal-footer .btn {
+        width: 100%;
+        margin: 5px 0;
         white-space: nowrap;
     }
     

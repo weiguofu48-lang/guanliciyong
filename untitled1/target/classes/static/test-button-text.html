@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>按钮文字显示测试</title>
+    <link rel="stylesheet" href="/untitled1/static/css/style.css">
+    <style>
+        .test-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .test-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .button-test {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .button-test h4 {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔧 按钮文字显示测试</h1>
+        
+        <div class="test-section">
+            <h3>🎯 问题描述</h3>
+            <p>用户反馈："部门管理表单中删除按钮显示出文字来" - 删除按钮没有显示文字。</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>🧪 按钮测试</h3>
+            
+            <div class="button-test">
+                <h4>1. 基础按钮样式测试</h4>
+                <div class="button-row">
+                    <button class="btn btn-success">添加</button>
+                    <button class="btn btn-secondary">编辑</button>
+                    <button class="btn btn-danger">删除</button>
+                    <button class="btn btn-info">管理岗位</button>
+                </div>
+            </div>
+            
+            <div class="button-test">
+                <h4>2. 表格中的按钮样式测试</h4>
+                <div class="button-row">
+                    <button class="btn btn-success" style="width: auto; padding: 8px 16px; margin: 0 5px; font-size: 14px;">添加</button>
+                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; margin: 0 5px; font-size: 14px;">编辑</button>
+                    <button class="btn btn-danger" style="width: auto; padding: 8px 16px; margin: 0 5px; font-size: 14px;">删除</button>
+                    <button class="btn btn-info" style="width: auto; padding: 8px 16px; margin: 0 5px; font-size: 14px;">管理岗位</button>
+                </div>
+            </div>
+            
+            <div class="button-test">
+                <h4>3. 模拟部门管理表格</h4>
+                <table class="table" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>部门编号</th>
+                            <th>部门名称</th>
+                            <th>描述</th>
+                            <th>岗位数量</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>研发部</td>
+                            <td>负责产品研发和技术创新</td>
+                            <td>3</td>
+                            <td class="actions">
+                                <button class="btn btn-info" onclick="testManagePositions()">📋 管理岗位</button>
+                                <button class="btn btn-secondary" onclick="testEdit()">编辑</button>
+                                <button class="btn btn-danger" onclick="testDelete()">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>市场部</td>
+                            <td>负责市场推广和客户关系管理</td>
+                            <td>2</td>
+                            <td class="actions">
+                                <button class="btn btn-info" onclick="testManagePositions()">📋 管理岗位</button>
+                                <button class="btn btn-secondary" onclick="testEdit()">编辑</button>
+                                <button class="btn btn-danger" onclick="testDelete()">删除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="button-test">
+                <h4>4. 修复后的按钮样式测试</h4>
+                <div class="button-row">
+                    <button class="btn btn-danger" style="width: auto; padding: 8px 16px; margin: 0 5px; font-size: 14px; text-transform: none; letter-spacing: normal;">删除</button>
+                    <button class="btn btn-secondary" style="width: auto; padding: 8px 16px; margin: 0 5px; font-size: 14px; text-transform: none; letter-spacing: normal;">编辑</button>
+                    <button class="btn btn-info" style="width: auto; padding: 8px 16px; margin: 0 5px; font-size: 14px; text-transform: none; letter-spacing: normal;">管理岗位</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔍 问题分析</h3>
+            <p><strong>可能的原因：</strong></p>
+            <p>1. CSS样式问题：按钮基础样式设置了 text-transform: uppercase</p>
+            <p>2. 字体大小问题：表格中按钮字体过小</p>
+            <p>3. 颜色对比问题：文字颜色与背景色对比度不够</p>
+            <p>4. 文字间距问题：letter-spacing 设置过大</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>✅ 解决方案</h3>
+            <p><strong>修复CSS样式：</strong></p>
+            <p>• 为表格中的按钮添加 text-transform: none</p>
+            <p>• 调整 letter-spacing 为正常值</p>
+            <p>• 确保文字颜色对比度足够</p>
+            <p>• 优化按钮大小和间距</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔗 测试链接</h3>
+            <button class="btn btn-success" onclick="window.open('/untitled1/static/index.html', '_blank')">🏠 访问主页面</button>
+            <button class="btn btn-info" onclick="window.open('/untitled1/static/test-department-positions.html', '_blank')">🏢 部门岗位管理</button>
+        </div>
+        
+        <div id="testStatus" class="status">
+            ✅ 按钮文字显示测试页面已加载，请检查各种按钮的文字显示情况
+        </div>
+    </div>
+    
+    <script>
+        function testManagePositions() {
+            alert('管理岗位按钮点击成功！');
+        }
+        
+        function testEdit() {
+            alert('编辑按钮点击成功！');
+        }
+        
+        function testDelete() {
+            if (confirm('确定要删除这个部门吗？')) {
+                alert('删除按钮点击成功！');
+            }
+        }
+        
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('按钮文字显示测试页面已加载');
+            updateTestStatus('请检查各种按钮的文字显示情况，特别是"删除"按钮');
+        });
+        
+        function updateTestStatus(message) {
+            document.getElementById('testStatus').textContent = message;
+        }
+    </script>
+</body>
+</html>
+

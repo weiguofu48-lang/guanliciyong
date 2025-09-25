@@ -1,6 +1,6 @@
 com\enterprise\repository\UserRepository.class
-com\enterprise\service\PositionServiceImpl.class
 com\enterprise\entity\EmployeeMovement.class
+com\enterprise\entity\FileTransfer.class
 com\enterprise\controller\NotificationController.class
 com\enterprise\entity\Employee.class
 com\enterprise\config\WebMvcConfig.class
@@ -8,10 +8,12 @@ com\enterprise\entity\Role.class
 com\enterprise\service\impl\EmployeeServiceImpl.class
 com\enterprise\entity\Department.class
 com\enterprise\controller\HomeController.class
+com\enterprise\repository\FileTransferRepository.class
 com\enterprise\controller\PositionController.class
 com\enterprise\repository\NotificationRepository.class
 com\enterprise\service\UserServiceImpl.class
 com\enterprise\service\impl\NotificationServiceImpl.class
+com\enterprise\entity\TransferStatus.class
 com\enterprise\service\UserService.class
 com\enterprise\entity\EmployeeStatus.class
 com\enterprise\controller\DepartmentController.class
@@ -23,6 +25,7 @@ com\enterprise\entity\MovementType.class
 com\enterprise\controller\DashboardController.class
 com\enterprise\repository\EmployeeRepository.class
 com\enterprise\service\DepartmentService.class
+com\enterprise\service\FileTransferService.class
 com\enterprise\entity\Gender.class
 com\enterprise\entity\Position.class
 com\enterprise\service\NotificationService.class
@@ -31,9 +34,11 @@ com\enterprise\service\impl\UserDetailsServiceImpl.class
 com\enterprise\service\EmployeeService.class
 com\enterprise\dto\PositionDTO.class
 com\enterprise\repository\RoleRepository.class
+com\enterprise\service\impl\FileTransferServiceImpl.class
 com\enterprise\repository\DepartmentRepository.class
 com\enterprise\entity\User.class
 com\enterprise\EnterpriseManagementSystemApplication.class
 com\enterprise\config\SecurityConfig.class
 com\enterprise\controller\UserController.class
 com\enterprise\entity\Notification.class
+com\enterprise\controller\FileTransferController.class

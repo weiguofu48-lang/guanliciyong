@@ -1,15 +1,7 @@
 USE enterprise_db;
 
--- Drop tables in correct order to avoid foreign key constraints
-DROP TABLE IF EXISTS t_employee_movement;
-DROP TABLE IF EXISTS t_employee;
-DROP TABLE IF EXISTS t_position;
-DROP TABLE IF EXISTS t_user;
-DROP TABLE IF EXISTS t_department;
-DROP TABLE IF EXISTS t_role;
-
 -- Create t_role table
-CREATE TABLE t_role (
+CREATE TABLE IF NOT EXISTS t_role (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE
 );
@@ -20,7 +12,7 @@ INSERT IGNORE INTO t_role (name) VALUES ('ROLE_MANAGER');
 INSERT IGNORE INTO t_role (name) VALUES ('ROLE_EMPLOYEE');
 
 -- Create t_user table
-CREATE TABLE t_user (
+CREATE TABLE IF NOT EXISTS t_user (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL,
@@ -48,7 +40,7 @@ WHERE NOT EXISTS (SELECT 1 FROM t_user WHERE username = 'lisi');
 
 
 -- Create t_department table
-CREATE TABLE t_department (
+CREATE TABLE IF NOT EXISTS t_department (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE,
     description VARCHAR(500)
@@ -61,7 +53,7 @@ INSERT IGNORE INTO t_department (name, description) VALUES ('人力资源部', '
 INSERT IGNORE INTO t_department (name, description) VALUES ('财务部', '负责公司财务管理和会计核算');
 
 -- Create t_position table
-CREATE TABLE t_position (
+CREATE TABLE IF NOT EXISTS t_position (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description VARCHAR(500),
@@ -92,7 +84,7 @@ WHERE NOT EXISTS (SELECT 1 FROM t_position WHERE name = '财务会计');
 
 
 -- Create t_employee table
-CREATE TABLE t_employee (
+CREATE TABLE IF NOT EXISTS t_employee (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     employee_id VARCHAR(50) NOT NULL UNIQUE,
     name VARCHAR(100) NOT NULL,
@@ -106,7 +98,7 @@ CREATE TABLE t_employee (
 );
 
 -- Create t_employee_movement table
-CREATE TABLE t_employee_movement (
+CREATE TABLE IF NOT EXISTS t_employee_movement (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     movement_type VARCHAR(50) NOT NULL,
     movement_date DATE NOT NULL,
@@ -120,6 +112,27 @@ CREATE TABLE IF NOT EXISTS t_notification (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     message TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create t_file_transfer table
+CREATE TABLE IF NOT EXISTS t_file_transfer (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    file_name VARCHAR(255) NOT NULL,
+    original_file_name VARCHAR(255) NOT NULL,
+    file_path VARCHAR(500) NOT NULL,
+    file_size BIGINT NOT NULL,
+    file_type VARCHAR(100) NOT NULL,
+    file_hash VARCHAR(255) NOT NULL,
+    sender_id BIGINT NOT NULL,
+    receiver_id BIGINT NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'PENDING',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    sent_at TIMESTAMP NULL,
+    received_at TIMESTAMP NULL,
+    expires_at TIMESTAMP NULL,
+    message TEXT,
+    CONSTRAINT fk_file_transfer_sender FOREIGN KEY (sender_id) REFERENCES t_user(id),
+    CONSTRAINT fk_file_transfer_receiver FOREIGN KEY (receiver_id) REFERENCES t_user(id)
 );
 
 -- Insert example employee data (updated to use position_id)

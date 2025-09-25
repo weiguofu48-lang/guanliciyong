@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模态框响应式测试</title>
+    <link rel="stylesheet" href="/untitled1/static/css/style.css">
+    <style>
+        .test-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .test-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        .info-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .info-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .info-section p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            color: #555;
+            position: relative;
+            padding-left: 25px;
+        }
+        .feature-list li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>模态框响应式设计测试</h1>
+        
+        <div class="info-section">
+            <h3>🎯 测试目标</h3>
+            <p>验证模态框在不同屏幕尺寸下的自适应能力和滚动功能。</p>
+        </div>
+        
+        <div class="info-section">
+            <h3>✨ 新增功能</h3>
+            <ul class="feature-list">
+                <li>模态框自动适应页面大小</li>
+                <li>支持内容滚动（当内容超出视窗时）</li>
+                <li>响应式设计（桌面端和移动端优化）</li>
+                <li>自定义滚动条样式</li>
+                <li>更大的显示区域（最大宽度800px）</li>
+                <li>更好的空间利用率（最大高度95vh）</li>
+            </ul>
+        </div>
+        
+        <div class="test-buttons">
+            <button class="test-btn" onclick="testShortForm()">📝 测试短表单</button>
+            <button class="test-btn" onclick="testLongForm()">📋 测试长表单</button>
+            <button class="test-btn" onclick="testEmployeeForm()">👥 测试员工表单</button>
+            <button class="test-btn" onclick="testVeryLongForm()">📄 测试超长表单</button>
+        </div>
+        
+        <div class="info-section">
+            <h3>📱 测试说明</h3>
+            <p><strong>桌面端测试：</strong>调整浏览器窗口大小，观察模态框如何适应不同宽度。</p>
+            <p><strong>移动端测试：</strong>使用浏览器开发者工具切换到移动设备视图，或在实际移动设备上测试。</p>
+            <p><strong>滚动测试：</strong>当表单内容超出模态框高度时，应该能够滚动查看所有内容。</p>
+        </div>
+    </div>
+    
+    <!-- 模态框 -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+    
+    <script>
+        function showModal(title, formContent, formId, submitHandler) {
+            const modal = document.getElementById('modal');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalBody.innerHTML = `
+                <div class="modal-header">
+                    <h3>${title}</h3>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="${formId}">${formContent}</form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+                    <button type="submit" form="${formId}" class="btn btn-success">保存</button>
+                </div>
+            `;
+            modal.style.display = 'block';
+            document.getElementById(formId).addEventListener('submit', submitHandler);
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+        
+        function testShortForm() {
+            const formContent = `
+                <div class="form-group">
+                    <label for="name">姓名:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">邮箱:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">电话:</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+            `;
+            showModal('短表单测试', formContent, 'shortForm', handleShortForm);
+        }
+        
+        function testLongForm() {
+            const formContent = `
+                <div class="form-group">
+                    <label for="empName">员工姓名:</label>
+                    <input type="text" id="empName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="empId">员工编号:</label>
+                    <input type="text" id="empId" name="employeeId" required>
+                </div>
+                <div class="form-group">
+                    <label for="empGender">性别:</label>
+                    <select id="empGender" name="gender" required>
+                        <option value="">请选择</option>
+                        <option value="MALE">男</option>
+                        <option value="FEMALE">女</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="empDept">部门:</label>
+                    <select id="empDept" name="departmentId" required>
+                        <option value="">请选择部门</option>
+                        <option value="1">技术部</option>
+                        <option value="2">销售部</option>
+                        <option value="3">人事部</option>
+                        <option value="4">财务部</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="empPosition">职位:</label>
+                    <select id="empPosition" name="positionId" required>
+                        <option value="">请选择职位</option>
+                        <option value="1">软件工程师</option>
+                        <option value="2">产品经理</option>
+                        <option value="3">销售经理</option>
+                        <option value="4">人事专员</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="empHireDate">入职日期:</label>
+                    <input type="date" id="empHireDate" name="hireDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="empStatus">状态:</label>
+                    <select id="empStatus" name="status" required>
+                        <option value="">请选择</option>
+                        <option value="ON_PROBATION">试用期</option>
+                        <option value="REGULAR">正式</option>
+                        <option value="ON_LEAVE">休假中</option>
+                        <option value="RESIGNED">已离职</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="empAddress">地址:</label>
+                    <textarea id="empAddress" name="address" rows="3" placeholder="请输入详细地址"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="empNotes">备注:</label>
+                    <textarea id="empNotes" name="notes" rows="3" placeholder="请输入备注信息"></textarea>
+                </div>
+            `;
+            showModal('长表单测试', formContent, 'longForm', handleLongForm);
+        }
+        
+        function testEmployeeForm() {
+            const formContent = `
+                <div class="form-group">
+                    <label for="empName">员工姓名:</label>
+                    <input type="text" id="empName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="empId">员工编号:</label>
+                    <input type="text" id="empId" name="employeeId" required>
+                </div>
+                <div class="form-group">
+                    <label for="empGender">性别:</label>
+                    <select id="empGender" name="gender" required>
+                        <option value="">请选择</option>
+                        <option value="MALE">男</option>
+                        <option value="FEMALE">女</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="empDept">部门:</label>
+                    <select id="empDept" name="departmentId" required>
+                        <option value="">请选择部门</option>
+                        <option value="1">技术部</option>
+                        <option value="2">销售部</option>
+                        <option value="3">人事部</option>
+                        <option value="4">财务部</option>
+                        <option value="5">市场部</option>
+                        <option value="6">运营部</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="empPosition">职位:</label>
+                    <select id="empPosition" name="positionId" required>
+                        <option value="">请选择职位</option>
+                        <option value="1">软件工程师</option>
+                        <option value="2">高级软件工程师</option>
+                        <option value="3">技术经理</option>
+                        <option value="4">产品经理</option>
+                        <option value="5">销售经理</option>
+                        <option value="6">人事专员</option>
+                        <option value="7">财务专员</option>
+                        <option value="8">市场专员</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="empHireDate">入职日期:</label>
+                    <input type="date" id="empHireDate" name="hireDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="empStatus">状态:</label>
+                    <select id="empStatus" name="status" required>
+                        <option value="">请选择</option>
+                        <option value="ON_PROBATION">试用期</option>
+                        <option value="REGULAR">正式</option>
+                        <option value="ON_LEAVE">休假中</option>
+                        <option value="RESIGNED">已离职</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="empSalary">薪资:</label>
+                    <input type="number" id="empSalary" name="salary" placeholder="请输入薪资">
+                </div>
+                <div class="form-group">
+                    <label for="empAddress">地址:</label>
+                    <textarea id="empAddress" name="address" rows="3" placeholder="请输入详细地址"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="empNotes">备注:</label>
+                    <textarea id="empNotes" name="notes" rows="3" placeholder="请输入备注信息"></textarea>
+                </div>
+            `;
+            showModal('员工表单测试', formContent, 'employeeForm', handleEmployeeForm);
+        }
+        
+        function testVeryLongForm() {
+            let formContent = '';
+            for (let i = 1; i <= 20; i++) {
+                formContent += `
+                    <div class="form-group">
+                        <label for="field${i}">字段 ${i}:</label>
+                        <input type="text" id="field${i}" name="field${i}" placeholder="请输入字段 ${i} 的内容">
+                    </div>
+                `;
+            }
+            formContent += `
+                <div class="form-group">
+                    <label for="description">详细描述:</label>
+                    <textarea id="description" name="description" rows="5" placeholder="请输入详细描述"></textarea>
+                </div>
+            `;
+            showModal('超长表单测试', formContent, 'veryLongForm', handleVeryLongForm);
+        }
+        
+        function handleShortForm(e) {
+            e.preventDefault();
+            alert('短表单提交成功！');
+            closeModal();
+        }
+        
+        function handleLongForm(e) {
+            e.preventDefault();
+            alert('长表单提交成功！');
+            closeModal();
+        }
+        
+        function handleEmployeeForm(e) {
+            e.preventDefault();
+            alert('员工表单提交成功！');
+            closeModal();
+        }
+        
+        function handleVeryLongForm(e) {
+            e.preventDefault();
+            alert('超长表单提交成功！');
+            closeModal();
+        }
+        
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        // 页面加载完成后的提示
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('模态框响应式测试页面已加载');
+            console.log('请尝试不同的测试按钮，观察模态框的自适应效果');
+        });
+    </script>
+</body>
+</html>
+

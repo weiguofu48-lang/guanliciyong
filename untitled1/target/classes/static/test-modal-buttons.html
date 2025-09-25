@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模态框按钮测试</title>
+    <link rel="stylesheet" href="/untitled1/static/css/style.css">
+    <style>
+        .test-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .test-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        .info-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .info-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .info-section p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .button-test {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+        }
+        .button-test h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .button-test p {
+            margin: 5px 0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>模态框按钮显示测试</h1>
+        
+        <div class="info-section">
+            <h3>🎯 测试目标</h3>
+            <p>验证模态框中的"添加"和"取消"按钮是否正确显示。</p>
+        </div>
+        
+        <div class="info-section">
+            <h3>✅ 修复内容</h3>
+            <div class="button-test">
+                <h4>添加操作</h4>
+                <p>• 员工添加窗口：显示"添加"和"取消"按钮</p>
+                <p>• 部门添加窗口：显示"添加"和"取消"按钮</p>
+                <p>• 用户添加窗口：显示"添加"和"取消"按钮</p>
+                <p>• 通知添加窗口：显示"添加"和"取消"按钮</p>
+            </div>
+            <div class="button-test">
+                <h4>编辑操作</h4>
+                <p>• 员工编辑窗口：显示"保存"和"取消"按钮</p>
+                <p>• 部门编辑窗口：显示"保存"和"取消"按钮</p>
+                <p>• 用户编辑窗口：显示"保存"和"取消"按钮</p>
+                <p>• 通知编辑窗口：显示"保存"和"取消"按钮</p>
+            </div>
+        </div>
+        
+        <div class="test-buttons">
+            <button class="test-btn" onclick="testAddEmployee()">👥 测试添加员工</button>
+            <button class="test-btn" onclick="testEditEmployee()">✏️ 测试编辑员工</button>
+            <button class="test-btn" onclick="testAddDepartment()">🏢 测试添加部门</button>
+            <button class="test-btn" onclick="testEditDepartment()">📝 测试编辑部门</button>
+            <button class="test-btn" onclick="testAddUser()">👤 测试添加用户</button>
+            <button class="test-btn" onclick="testEditUser()">🔧 测试编辑用户</button>
+        </div>
+        
+        <div class="info-section">
+            <h3>📋 测试检查清单</h3>
+            <p><strong>添加操作测试：</strong></p>
+            <p>✅ 点击"添加员工"按钮</p>
+            <p>✅ 检查是否显示"添加"和"取消"按钮</p>
+            <p>✅ 检查按钮颜色和样式是否正确</p>
+            <p>✅ 测试按钮点击功能</p>
+            
+            <p><strong>编辑操作测试：</strong></p>
+            <p>✅ 点击"编辑员工"按钮</p>
+            <p>✅ 检查是否显示"保存"和"取消"按钮</p>
+            <p>✅ 检查按钮颜色和样式是否正确</p>
+            <p>✅ 测试按钮点击功能</p>
+        </div>
+        
+        <div class="info-section">
+            <h3>🔧 技术实现</h3>
+            <p><strong>智能按钮文字：</strong></p>
+            <p>• showModal函数新增buttonText参数</p>
+            <p>• 添加操作：buttonText = '添加'</p>
+            <p>• 编辑操作：buttonText = '保存'（默认值）</p>
+            <p>• 取消按钮：始终显示"取消"</p>
+        </div>
+    </div>
+    
+    <!-- 模态框 -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+    
+    <script>
+        function showModal(title, formContent, formId, submitHandler, buttonText = '保存') {
+            const modal = document.getElementById('modal');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalBody.innerHTML = `
+                <div class="modal-header">
+                    <h3>${title}</h3>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="${formId}">${formContent}</form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+                    <button type="submit" form="${formId}" class="btn btn-success">${buttonText}</button>
+                </div>
+            `;
+            modal.style.display = 'block';
+            document.getElementById(formId).addEventListener('submit', submitHandler);
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+        
+        function testAddEmployee() {
+            const formContent = `
+                <div class="form-group">
+                    <label for="empName">员工姓名:</label>
+                    <input type="text" id="empName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="empId">员工编号:</label>
+                    <input type="text" id="empId" name="employeeId" required>
+                </div>
+                <div class="form-group">
+                    <label for="empGender">性别:</label>
+                    <select id="empGender" name="gender" required>
+                        <option value="">请选择</option>
+                        <option value="MALE">男</option>
+                        <option value="FEMALE">女</option>
+                    </select>
+                </div>
+            `;
+            showModal('添加员工', formContent, 'addEmployeeForm', handleAddEmployee, '添加');
+        }
+        
+        function testEditEmployee() {
+            const formContent = `
+                <div class="form-group">
+                    <label for="empName">员工姓名:</label>
+                    <input type="text" id="empName" name="name" value="张三" required>
+                </div>
+                <div class="form-group">
+                    <label for="empId">员工编号:</label>
+                    <input type="text" id="empId" name="employeeId" value="EMP001" required>
+                </div>
+                <div class="form-group">
+                    <label for="empGender">性别:</label>
+                    <select id="empGender" name="gender" required>
+                        <option value="MALE" selected>男</option>
+                        <option value="FEMALE">女</option>
+                    </select>
+                </div>
+            `;
+            showModal('编辑员工', formContent, 'editEmployeeForm', handleEditEmployee);
+        }
+        
+        function testAddDepartment() {
+            const formContent = `
+                <div class="form-group">
+                    <label for="deptName">部门名称:</label>
+                    <input type="text" id="deptName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="deptDesc">描述:</label>
+                    <textarea id="deptDesc" name="description" rows="4"></textarea>
+                </div>
+            `;
+            showModal('添加部门', formContent, 'addDepartmentForm', handleAddDepartment, '添加');
+        }
+        
+        function testEditDepartment() {
+            const formContent = `
+                <div class="form-group">
+                    <label for="deptName">部门名称:</label>
+                    <input type="text" id="deptName" name="name" value="技术部" required>
+                </div>
+                <div class="form-group">
+                    <label for="deptDesc">描述:</label>
+                    <textarea id="deptDesc" name="description" rows="4">负责技术开发工作</textarea>
+                </div>
+            `;
+            showModal('编辑部门', formContent, 'editDepartmentForm', handleEditDepartment);
+        }
+        
+        function testAddUser() {
+            const formContent = `
+                <div class="form-group">
+                    <label for="userName">用户名:</label>
+                    <input type="text" id="userName" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">密码:</label>
+                    <input type="password" id="userPassword" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="userRealName">真实姓名:</label>
+                    <input type="text" id="userRealName" name="realName" required>
+                </div>
+            `;
+            showModal('添加用户', formContent, 'addUserForm', handleAddUser, '添加');
+        }
+        
+        function testEditUser() {
+            const formContent = `
+                <div class="form-group">
+                    <label for="userName">用户名:</label>
+                    <input type="text" id="userName" name="username" value="admin" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPassword">新密码 (留空表示不修改):</label>
+                    <input type="password" id="editPassword" name="password">
+                </div>
+                <div class="form-group">
+                    <label for="userRealName">真实姓名:</label>
+                    <input type="text" id="userRealName" name="realName" value="管理员" required>
+                </div>
+            `;
+            showModal('编辑用户', formContent, 'editUserForm', handleEditUser);
+        }
+        
+        function handleAddEmployee(e) {
+            e.preventDefault();
+            alert('✅ 员工添加成功！');
+            closeModal();
+        }
+        
+        function handleEditEmployee(e) {
+            e.preventDefault();
+            alert('✅ 员工编辑成功！');
+            closeModal();
+        }
+        
+        function handleAddDepartment(e) {
+            e.preventDefault();
+            alert('✅ 部门添加成功！');
+            closeModal();
+        }
+        
+        function handleEditDepartment(e) {
+            e.preventDefault();
+            alert('✅ 部门编辑成功！');
+            closeModal();
+        }
+        
+        function handleAddUser(e) {
+            e.preventDefault();
+            alert('✅ 用户添加成功！');
+            closeModal();
+        }
+        
+        function handleEditUser(e) {
+            e.preventDefault();
+            alert('✅ 用户编辑成功！');
+            closeModal();
+        }
+        
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        // 页面加载完成后的提示
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('模态框按钮测试页面已加载');
+            console.log('请测试不同的按钮组合，验证按钮文字是否正确显示');
+        });
+    </script>
+</body>
+</html>
+

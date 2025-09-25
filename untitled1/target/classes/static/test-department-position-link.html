@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>部门职位联动测试</title>
+    <link rel="stylesheet" href="/untitled1/static/css/style.css">
+    <style>
+        .test-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .test-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .test-section p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .test-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .test-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔗 部门职位联动功能测试</h1>
+        
+        <div class="test-section">
+            <h3>🎯 问题描述</h3>
+            <p>用户反馈："添加界面部门没有职位" - 在添加员工时，选择部门后职位选项没有动态更新。</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>✅ 修复内容</h3>
+            <p><strong>1. 添加部门选择事件：</strong></p>
+            <p>• 在部门选择框添加 onchange="updatePositionOptions()" 事件</p>
+            <p>• 当用户选择部门时自动更新职位选项</p>
+            
+            <p><strong>2. 新增职位更新函数：</strong></p>
+            <p>• updatePositionOptions() - 根据选择的部门更新职位</p>
+            <p>• loadPositionOptionsForDepartment() - 为指定部门加载职位</p>
+            
+            <p><strong>3. 优化编辑员工功能：</strong></p>
+            <p>• 编辑员工时正确加载对应部门的职位</p>
+            <p>• 确保职位选项与部门关联</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>🧪 测试表单</h3>
+            <div class="test-form">
+                <div class="form-group">
+                    <label for="testDept">部门:</label>
+                    <select id="testDept" onchange="testUpdatePositions()">
+                        <option value="">请选择部门</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="testPos">职位:</label>
+                    <select id="testPos">
+                        <option value="">请先选择部门</option>
+                    </select>
+                </div>
+                <div id="testStatus" class="status">请选择部门测试职位联动功能</div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔧 测试步骤</h3>
+            <p><strong>步骤1：测试添加员工</strong></p>
+            <p>1. 访问主页面：http://localhost:8082/untitled1/static/index.html</p>
+            <p>2. 登录系统</p>
+            <p>3. 点击"员工管理" → "添加员工"</p>
+            <p>4. 选择部门，观察职位选项是否更新</p>
+            
+            <p><strong>步骤2：测试编辑员工</strong></p>
+            <p>1. 点击"编辑员工"按钮</p>
+            <p>2. 修改部门选择</p>
+            <p>3. 观察职位选项是否相应更新</p>
+            
+            <p><strong>步骤3：测试不同部门</strong></p>
+            <p>1. 选择不同部门</p>
+            <p>2. 验证职位选项是否正确显示</p>
+            <p>3. 测试无职位的部门</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 预期结果</h3>
+            <p><strong>添加员工时：</strong></p>
+            <p>✅ 选择部门后，职位选项自动更新</p>
+            <p>✅ 显示该部门的所有职位</p>
+            <p>✅ 如果部门无职位，显示"该部门暂无职位"</p>
+            
+            <p><strong>编辑员工时：</strong></p>
+            <p>✅ 正确显示当前员工的部门和职位</p>
+            <p>✅ 修改部门后职位选项相应更新</p>
+            <p>✅ 保持原有的职位选择</p>
+            
+            <p><strong>错误处理：</strong></p>
+            <p>✅ 网络错误时显示友好提示</p>
+            <p>✅ 部门未选择时提示"请先选择部门"</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔗 测试链接</h3>
+            <button class="test-btn" onclick="window.open('/untitled1/static/index.html', '_blank')">🏠 访问主页面</button>
+            <button class="test-btn" onclick="window.open('/untitled1/static/simple-modal-test.html', '_blank')">🔧 模态框测试</button>
+            <button class="test-btn" onclick="window.open('/untitled1/static/test-department-positions.html', '_blank')">🏢 部门岗位管理</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔍 技术实现</h3>
+            <p><strong>JavaScript函数：</strong></p>
+            <p>• updatePositionOptions() - 动态更新职位选项</p>
+            <p>• loadPositionOptionsForDepartment() - 加载指定部门职位</p>
+            <p>• 部门选择框添加 onchange 事件</p>
+            
+            <p><strong>API调用：</strong></p>
+            <p>• GET /api/positions/department/{departmentId}</p>
+            <p>• 根据部门ID获取该部门的所有职位</p>
+            
+            <p><strong>用户体验：</strong></p>
+            <p>• 实时更新职位选项</p>
+            <p>• 友好的错误提示</p>
+            <p>• 保持表单状态</p>
+        </div>
+        
+        <div id="finalStatus" class="status">
+            ✅ 部门职位联动功能已修复！现在选择部门后职位选项会自动更新。
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = '/untitled1/api';
+        
+        // 加载部门选项
+        async function loadTestDepartments() {
+            try {
+                const response = await fetch(`${API_BASE}/departments`);
+                const departments = await response.json();
+                const deptSelect = document.getElementById('testDept');
+                
+                deptSelect.innerHTML = '<option value="">请选择部门</option>';
+                departments.forEach(dept => {
+                    const option = document.createElement('option');
+                    option.value = dept.id;
+                    option.textContent = dept.name;
+                    deptSelect.appendChild(option);
+                });
+                
+                updateTestStatus('部门选项已加载，请选择部门测试职位联动功能');
+            } catch (error) {
+                updateTestStatus('加载部门失败: ' + error.message, 'error');
+            }
+        }
+        
+        // 测试职位更新
+        async function testUpdatePositions() {
+            const deptSelect = document.getElementById('testDept');
+            const posSelect = document.getElementById('testPos');
+            
+            if (!deptSelect || !posSelect) {
+                return;
+            }
+            
+            const selectedDeptId = deptSelect.value;
+            
+            if (!selectedDeptId) {
+                posSelect.innerHTML = '<option value="">请先选择部门</option>';
+                updateTestStatus('请选择部门测试职位联动功能');
+                return;
+            }
+            
+            updateTestStatus('正在加载职位选项...', 'warning');
+            
+            try {
+                const response = await fetch(`${API_BASE}/positions/department/${selectedDeptId}`);
+                const positions = await response.json();
+                
+                posSelect.innerHTML = '<option value="">请选择职位</option>';
+                
+                if (positions.length === 0) {
+                    posSelect.innerHTML += '<option value="" disabled>该部门暂无职位</option>';
+                    updateTestStatus('该部门暂无职位，请先为部门添加职位', 'warning');
+                    return;
+                }
+                
+                positions.forEach(pos => {
+                    const option = document.createElement('option');
+                    option.value = pos.id;
+                    option.textContent = pos.name;
+                    posSelect.appendChild(option);
+                });
+                
+                updateTestStatus(`✅ 成功加载 ${positions.length} 个职位选项`, 'success');
+                
+            } catch (error) {
+                console.error('加载职位选项失败:', error);
+                posSelect.innerHTML = '<option value="">加载职位失败</option>';
+                updateTestStatus('❌ 加载职位失败: ' + error.message, 'error');
+            }
+        }
+        
+        // 更新测试状态
+        function updateTestStatus(message, type = 'success') {
+            const statusDiv = document.getElementById('testStatus');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+        
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('部门职位联动测试页面已加载');
+            loadTestDepartments();
+        });
+    </script>
+</body>
+</html>
+

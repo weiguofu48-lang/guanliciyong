@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>部门岗位管理测试</title>
+    <link rel="stylesheet" href="/untitled1/static/css/style.css">
+    <style>
+        .test-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .test-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .test-section p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            color: #555;
+            position: relative;
+            padding-left: 25px;
+        }
+        .feature-list li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+        .test-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🏢 部门岗位管理功能测试</h1>
+        
+        <div class="test-section">
+            <h3>🎯 功能概述</h3>
+            <p>为每个部门设置和管理岗位，包括添加、编辑、删除岗位功能。</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>✨ 新增功能</h3>
+            <ul class="feature-list">
+                <li>部门列表显示岗位数量</li>
+                <li>每个部门都有"管理岗位"按钮</li>
+                <li>岗位管理界面显示所有岗位</li>
+                <li>支持添加新岗位</li>
+                <li>支持编辑现有岗位</li>
+                <li>支持删除岗位</li>
+                <li>岗位数量实时更新</li>
+                <li>岗位与部门关联</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h3>🧪 测试步骤</h3>
+            <p><strong>步骤1：访问部门管理页面</strong></p>
+            <p>1. 登录系统</p>
+            <p>2. 点击"部门管理"按钮</p>
+            <p>3. 查看部门列表，应该能看到"岗位数量"列</p>
+            
+            <p><strong>步骤2：管理部门岗位</strong></p>
+            <p>1. 点击任意部门的"📋 管理岗位"按钮</p>
+            <p>2. 查看该部门的岗位列表</p>
+            <p>3. 点击"➕ 添加岗位"按钮</p>
+            <p>4. 填写岗位名称和描述</p>
+            <p>5. 点击"添加"按钮</p>
+            
+            <p><strong>步骤3：编辑岗位</strong></p>
+            <p>1. 在岗位列表中点击"编辑"按钮</p>
+            <p>2. 修改岗位信息</p>
+            <p>3. 点击"保存"按钮</p>
+            
+            <p><strong>步骤4：删除岗位</strong></p>
+            <p>1. 在岗位列表中点击"删除"按钮</p>
+            <p>2. 确认删除操作</p>
+            <p>3. 验证岗位已被删除</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔗 测试链接</h3>
+            <button class="test-btn" onclick="window.open('/untitled1/static/index.html', '_blank')">🏠 访问主页面</button>
+            <button class="test-btn" onclick="window.open('/untitled1/static/simple-modal-test.html', '_blank')">🔧 模态框测试</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 预期结果</h3>
+            <p><strong>部门管理页面：</strong></p>
+            <p>✅ 显示部门列表，包含岗位数量列</p>
+            <p>✅ 每个部门都有"管理岗位"按钮</p>
+            <p>✅ 岗位数量实时显示（绿色表示有岗位，灰色表示无岗位）</p>
+            
+            <p><strong>岗位管理界面：</strong></p>
+            <p>✅ 显示该部门的所有岗位</p>
+            <p>✅ 每个岗位显示名称、描述和操作按钮</p>
+            <p>✅ 支持添加新岗位</p>
+            <p>✅ 支持编辑现有岗位</p>
+            <p>✅ 支持删除岗位</p>
+            
+            <p><strong>员工管理：</strong></p>
+            <p>✅ 添加员工时可以选择部门对应的岗位</p>
+            <p>✅ 岗位列表根据选择的部门动态更新</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔧 技术实现</h3>
+            <p><strong>后端API：</strong></p>
+            <p>• GET /api/positions/department/{departmentId} - 获取部门岗位</p>
+            <p>• POST /api/positions - 添加岗位</p>
+            <p>• PUT /api/positions/{id} - 更新岗位</p>
+            <p>• DELETE /api/positions/{id} - 删除岗位</p>
+            
+            <p><strong>前端功能：</strong></p>
+            <p>• 动态加载岗位数量</p>
+            <p>• 岗位管理模态框</p>
+            <p>• 岗位CRUD操作</p>
+            <p>• 实时更新界面</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>📋 测试检查清单</h3>
+            <p>在报告问题前，请确认：</p>
+            <p>□ 应用程序正在运行（端口8082）</p>
+            <p>□ 用户已成功登录</p>
+            <p>□ 部门管理页面正常显示</p>
+            <p>□ 岗位数量正确显示</p>
+            <p>□ 管理岗位按钮可以点击</p>
+            <p>□ 岗位管理界面正常显示</p>
+            <p>□ 添加岗位功能正常</p>
+            <p>□ 编辑岗位功能正常</p>
+            <p>□ 删除岗位功能正常</p>
+            <p>□ 岗位数量实时更新</p>
+        </div>
+        
+        <div class="status">
+            ✅ 部门岗位管理功能已实现！现在可以为每个部门设置和管理岗位了。
+        </div>
+    </div>
+    
+    <script>
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('部门岗位管理测试页面已加载');
+        });
+    </script>
+</body>
+</html>
+

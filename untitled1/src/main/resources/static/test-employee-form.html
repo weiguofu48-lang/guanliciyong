@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>员工表单测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        .result { margin: 10px 0; padding: 10px; background: #f5f5f5; border-radius: 3px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        select, input { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; }
+        .form-group { margin: 10px 0; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>员工管理表单测试</h1>
+    
+    <div class="test-section">
+        <h3>1. 测试部门API</h3>
+        <button onclick="testDepartmentsAPI()">测试部门API</button>
+        <div id="departmentsResult" class="result">等待测试...</div>
+    </div>
+    
+    <div class="test-section">
+        <h3>2. 测试职位API</h3>
+        <button onclick="testPositionsAPI()">测试职位API</button>
+        <div id="positionsResult" class="result">等待测试...</div>
+    </div>
+    
+    <div class="test-section">
+        <h3>3. 测试员工枚举API</h3>
+        <button onclick="testEmployeeEnumsAPI()">测试员工枚举API</button>
+        <div id="enumsResult" class="result">等待测试...</div>
+    </div>
+    
+    <div class="test-section">
+        <h3>4. 测试员工表单</h3>
+        <button onclick="testEmployeeForm()">测试员工表单</button>
+        <div id="formResult" class="result">等待测试...</div>
+        
+        <div id="testForm" style="display: none; margin-top: 20px;">
+            <h4>测试表单：</h4>
+            <div class="form-group">
+                <label for="testEmpName">员工姓名:</label>
+                <input type="text" id="testEmpName" name="name" placeholder="请输入员工姓名">
+            </div>
+            <div class="form-group">
+                <label for="testEmpId">员工编号:</label>
+                <input type="text" id="testEmpId" name="employeeId" placeholder="请输入员工编号">
+            </div>
+            <div class="form-group">
+                <label for="testEmpGender">性别:</label>
+                <select id="testEmpGender" name="gender">
+                    <option value="">请选择</option>
+                    <option value="MALE">男</option>
+                    <option value="FEMALE">女</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="testEmpDept">部门:</label>
+                <select id="testEmpDept" name="departmentId">
+                    <option value="">请选择部门</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="testEmpPosition">职位:</label>
+                <select id="testEmpPosition" name="positionId">
+                    <option value="">请选择职位</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="testEmpHireDate">入职日期:</label>
+                <input type="date" id="testEmpHireDate" name="hireDate">
+            </div>
+            <div class="form-group">
+                <label for="testEmpStatus">状态:</label>
+                <select id="testEmpStatus" name="status">
+                    <option value="">请选择</option>
+                    <option value="ON_PROBATION">试用期</option>
+                    <option value="REGULAR">正式</option>
+                    <option value="ON_LEAVE">休假中</option>
+                    <option value="RESIGNED">已离职</option>
+                </select>
+            </div>
+            <button onclick="testFormSubmission()">测试表单提交</button>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = '/untitled1/api';
+        
+        async function testDepartmentsAPI() {
+            const resultDiv = document.getElementById('departmentsResult');
+            resultDiv.innerHTML = '正在测试部门API...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/departments`);
+                if (response.ok) {
+                    const departments = await response.json();
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            ✅ 部门API正常<br>
+                            找到 ${departments.length} 个部门:<br>
+                            ${departments.map(dept => `${dept.name} (ID: ${dept.id})`).join('<br>')}
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ 部门API调用失败: ${response.status}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ 部门API错误: ${error.message}</div>`;
+            }
+        }
+        
+        async function testPositionsAPI() {
+            const resultDiv = document.getElementById('positionsResult');
+            resultDiv.innerHTML = '正在测试职位API...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/positions`);
+                if (response.ok) {
+                    const positions = await response.json();
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            ✅ 职位API正常<br>
+                            找到 ${positions.length} 个职位:<br>
+                            ${positions.map(pos => `${pos.name} (ID: ${pos.id})`).join('<br>')}
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ 职位API调用失败: ${response.status}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ 职位API错误: ${error.message}</div>`;
+            }
+        }
+        
+        async function testEmployeeEnumsAPI() {
+            const resultDiv = document.getElementById('enumsResult');
+            resultDiv.innerHTML = '正在测试员工枚举API...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/employees/enums`);
+                if (response.ok) {
+                    const enums = await response.json();
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            ✅ 员工枚举API正常<br>
+                            性别: ${JSON.stringify(enums.genders)}<br>
+                            状态: ${JSON.stringify(enums.statuses)}<br>
+                            部门数量: ${enums.departments.length}<br>
+                            职位数量: ${enums.positions.length}
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ 员工枚举API调用失败: ${response.status}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ 员工枚举API错误: ${error.message}</div>`;
+            }
+        }
+        
+        async function testEmployeeForm() {
+            const resultDiv = document.getElementById('formResult');
+            const formDiv = document.getElementById('testForm');
+            
+            resultDiv.innerHTML = '正在测试员工表单...';
+            
+            try {
+                // 加载部门选项
+                const deptResponse = await fetch(`${API_BASE}/departments`);
+                if (deptResponse.ok) {
+                    const departments = await deptResponse.json();
+                    const deptSelect = document.getElementById('testEmpDept');
+                    deptSelect.innerHTML = '<option value="">请选择部门</option>';
+                    departments.forEach(dept => {
+                        const option = document.createElement('option');
+                        option.value = dept.id;
+                        option.textContent = dept.name;
+                        deptSelect.appendChild(option);
+                    });
+                }
+                
+                // 加载职位选项
+                const posResponse = await fetch(`${API_BASE}/positions`);
+                if (posResponse.ok) {
+                    const positions = await posResponse.json();
+                    const posSelect = document.getElementById('testEmpPosition');
+                    posSelect.innerHTML = '<option value="">请选择职位</option>';
+                    positions.forEach(pos => {
+                        const option = document.createElement('option');
+                        option.value = pos.id;
+                        option.textContent = pos.name;
+                        posSelect.appendChild(option);
+                    });
+                }
+                
+                resultDiv.innerHTML = `
+                    <div class="success">
+                        ✅ 员工表单加载成功<br>
+                        部门和职位选项已加载
+                    </div>
+                `;
+                formDiv.style.display = 'block';
+                
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ 员工表单加载失败: ${error.message}</div>`;
+            }
+        }
+        
+        async function testFormSubmission() {
+            const formData = {
+                name: document.getElementById('testEmpName').value,
+                employeeId: document.getElementById('testEmpId').value,
+                gender: document.getElementById('testEmpGender').value,
+                departmentId: document.getElementById('testEmpDept').value,
+                positionId: document.getElementById('testEmpPosition').value,
+                hireDate: document.getElementById('testEmpHireDate').value,
+                status: document.getElementById('testEmpStatus').value
+            };
+            
+            console.log('表单数据:', formData);
+            
+            try {
+                const response = await fetch(`${API_BASE}/employees`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                console.log('提交结果:', result);
+                
+                if (response.ok && result.success) {
+                    alert('✅ 员工添加成功！');
+                } else {
+                    alert(`❌ 员工添加失败: ${result.message}`);
+                }
+            } catch (error) {
+                console.error('提交错误:', error);
+                alert(`❌ 提交错误: ${error.message}`);
+            }
+        }
+        
+        // 页面加载时自动测试
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('员工表单测试页面已加载');
+        });
+    </script>
+</body>
+</html>
+

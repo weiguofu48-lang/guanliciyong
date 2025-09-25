@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模态框关闭和删除按钮修复测试</title>
+    <link rel="stylesheet" href="/untitled1/static/css/style.css">
+    <style>
+        .test-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .test-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .test-section p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .test-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .button-test {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .button-test h4 {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔧 模态框关闭和删除按钮修复测试</h1>
+        
+        <div class="test-section">
+            <h3>🎯 问题描述</h3>
+            <p>1. 岗位管理窗口中点击关闭按钮会退出登录</p>
+            <p>2. 部门管理表格中删除按钮的格式问题</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>✅ 修复内容</h3>
+            <p><strong>1. 岗位管理窗口关闭问题：</strong></p>
+            <p>• 添加了 handlePositionManagementClose 函数</p>
+            <p>• 修复了 showModal 调用，传递正确的关闭处理函数</p>
+            <p>• 确保关闭按钮只关闭模态框，不退出登录</p>
+            
+            <p><strong>2. 删除按钮格式问题：</strong></p>
+            <p>• 检查CSS样式是否正确应用</p>
+            <p>• 确保删除按钮文字正常显示</p>
+            <p>• 优化按钮样式和格式</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>🧪 按钮格式测试</h3>
+            
+            <div class="button-test">
+                <h4>部门管理表格按钮测试</h4>
+                <div class="button-row">
+                    <button class="btn btn-info" onclick="testManagePositions()">📋 管理岗位</button>
+                    <button class="btn btn-secondary" onclick="testEdit()">编辑</button>
+                    <button class="btn btn-danger" onclick="testDelete()">删除</button>
+                </div>
+            </div>
+            
+            <div class="button-test">
+                <h4>岗位管理按钮测试</h4>
+                <div class="button-row">
+                    <button class="btn btn-success" onclick="testAddPosition()">➕ 添加岗位</button>
+                    <button class="btn btn-sm btn-secondary" onclick="testEditPosition()">编辑</button>
+                    <button class="btn btn-sm btn-danger" onclick="testDeletePosition()">删除</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔧 测试步骤</h3>
+            <p><strong>步骤1：测试岗位管理窗口关闭</strong></p>
+            <p>1. 访问主页面：http://localhost:8082/untitled1/static/index.html</p>
+            <p>2. 登录系统</p>
+            <p>3. 点击"部门管理"</p>
+            <p>4. 点击任意部门的"📋 管理岗位"按钮</p>
+            <p>5. 点击"关闭"按钮，确认不会退出登录</p>
+            
+            <p><strong>步骤2：测试删除按钮格式</strong></p>
+            <p>1. 在部门管理页面查看删除按钮</p>
+            <p>2. 确认删除按钮显示"删除"文字</p>
+            <p>3. 确认按钮样式正确（红色背景，白色文字）</p>
+            <p>4. 测试删除按钮功能</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 预期结果</h3>
+            <p><strong>岗位管理窗口：</strong></p>
+            <p>✅ 点击"关闭"按钮只关闭模态框</p>
+            <p>✅ 不会退出登录状态</p>
+            <p>✅ 关闭后返回部门管理页面</p>
+            
+            <p><strong>删除按钮：</strong></p>
+            <p>✅ 显示"删除"文字</p>
+            <p>✅ 红色背景，白色文字</p>
+            <p>✅ 点击后弹出确认对话框</p>
+            <p>✅ 确认后执行删除操作</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔗 测试链接</h3>
+            <button class="test-btn" onclick="window.open('/untitled1/static/index.html', '_blank')">🏠 访问主页面</button>
+            <button class="test-btn" onclick="window.open('/untitled1/static/test-button-text.html', '_blank')">🔧 按钮文字测试</button>
+            <button class="test-btn" onclick="window.open('/untitled1/static/test-department-positions.html', '_blank')">🏢 部门岗位管理</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔍 技术实现</h3>
+            <p><strong>岗位管理窗口关闭修复：</strong></p>
+            <p>• 添加 handlePositionManagementClose 函数</p>
+            <p>• 修复 showModal 调用参数</p>
+            <p>• 确保正确的关闭行为</p>
+            
+            <p><strong>删除按钮格式修复：</strong></p>
+            <p>• 检查CSS样式应用</p>
+            <p>• 确保文字显示正常</p>
+            <p>• 优化按钮样式</p>
+        </div>
+        
+        <div id="testStatus" class="status">
+            ✅ 模态框关闭和删除按钮修复测试页面已加载
+        </div>
+    </div>
+    
+    <!-- 模态框 -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+    
+    <script>
+        // 模拟岗位管理窗口
+        function testManagePositions() {
+            const formContent = `
+                <div style="margin-bottom: 20px;">
+                    <h4>测试部门 - 岗位管理</h4>
+                    <button class="btn btn-success" onclick="testAddPosition()">➕ 添加岗位</button>
+                </div>
+                <div id="positionsList">
+                    <div class="position-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border: 1px solid #ddd; margin: 5px 0; border-radius: 5px;">
+                        <div>
+                            <strong>软件工程师</strong>
+                            <br><small style="color: #666;">负责软件开发与维护</small>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-secondary" onclick="testEditPosition()">编辑</button>
+                            <button class="btn btn-sm btn-danger" onclick="testDeletePosition()">删除</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            showModal('测试部门 - 岗位管理', formContent, 'positionManagementForm', handlePositionManagementClose, '关闭');
+        }
+        
+        function handlePositionManagementClose(e) {
+            e.preventDefault();
+            closeModal();
+            updateTestStatus('✅ 岗位管理窗口关闭成功，没有退出登录');
+        }
+        
+        function showModal(title, formContent, formId, submitHandler, buttonText = '保存') {
+            const modal = document.getElementById('modal');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalBody.innerHTML = `
+                <div class="modal-header">
+                    <h3>${title}</h3>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="${formId}">${formContent}</form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+                    <button type="submit" form="${formId}" class="btn btn-success">${buttonText}</button>
+                </div>
+            `;
+            modal.style.display = 'block';
+            if (submitHandler) {
+                document.getElementById(formId).addEventListener('submit', submitHandler);
+            }
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+        
+        function testAddPosition() {
+            alert('添加岗位功能测试');
+        }
+        
+        function testEditPosition() {
+            alert('编辑岗位功能测试');
+        }
+        
+        function testDeletePosition() {
+            if (confirm('确定要删除这个岗位吗？')) {
+                alert('删除岗位功能测试');
+            }
+        }
+        
+        function testEdit() {
+            alert('编辑部门功能测试');
+        }
+        
+        function testDelete() {
+            if (confirm('确定要删除这个部门吗？')) {
+                alert('删除部门功能测试');
+            }
+        }
+        
+        function updateTestStatus(message) {
+            document.getElementById('testStatus').textContent = message;
+        }
+        
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('模态框关闭和删除按钮修复测试页面已加载');
+        });
+    </script>
+</body>
+</html>
+
