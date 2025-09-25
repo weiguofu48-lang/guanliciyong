@@ -2,7 +2,6 @@ package com.enterprise;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 
 import java.awt.Desktop;
 import java.io.IOException;
@@ -14,7 +13,7 @@ public class EnterpriseManagementSystemApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(EnterpriseManagementSystemApplication.class, args);
-        openBrowser("http://localhost:8081/untitled1/");
+        openBrowser("http://localhost:8082/untitled1/");
     }
 
     private static void openBrowser(String url) {

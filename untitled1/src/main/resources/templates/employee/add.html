@@ -1,55 +1,74 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add Employee</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加员工 - 企业管理系统</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Add New Employee</h1>
+        <div class="header">
+            <h1>企业管理系统</h1>
+            <p>添加新员工</p>
+        </div>
+        
+        <div class="content">
+            <div class="page-header">
+                <h2 class="page-title">👥 添加新员工</h2>
+                <div class="page-info">
+                    <span class="info-item">填写员工信息</span>
+                </div>
+            </div>
 
-        <form th:action="@{/employees/add}" th:object="${employee}" method="post">
-            <div class="form-group">
-                <label for="employeeId">Employee ID:</label>
-                <input type="text" id="employeeId" th:field="*{employeeId}" required/>
-            </div>
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" th:field="*{name}" required/>
-            </div>
-            <div class="form-group">
-                <label for="gender">Gender:</label>
-                <select id="gender" th:field="*{gender}" required>
-                    <option th:each="g : ${genders}" th:value="${g}" th:text="${g.displayName}"></option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="hireDate">Hire Date:</label>
-                <input type="date" id="hireDate" th:field="*{hireDate}" required/>
-            </div>
-            <div class="form-group">
-                <label for="department">Department:</label>
-                <select id="department" th:field="*{department}" required>
-                    <option th:each="dept : ${departments}" th:value="${dept.id}" th:text="${dept.name}"></option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="position">Position:</label>
-                <select id="position" th:field="*{position}" required>
-                    <option th:each="pos : ${positions}" th:value="${pos.id}" th:text="${pos.name}"></option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="status">Status:</label>
-                <select id="status" th:field="*{status}" required>
-                    <option th:each="s : ${statuses}" th:value="${s}" th:text="${s.displayName}"></option>
-                </select>
-            </div>
-            <button type="submit" class="btn">Save Employee</button>
-        </form>
-
-        <p style="margin-top: 20px;"><a th:href="@{/employees}">Back to Employee List</a></p>
+            <form th:action="@{/employees/add}" th:object="${employee}" method="post">
+                <div class="form-group">
+                    <label for="employeeId">员工编号:</label>
+                    <input type="text" id="employeeId" th:field="*{employeeId}" placeholder="请输入员工编号" required/>
+                </div>
+                <div class="form-group">
+                    <label for="name">员工姓名:</label>
+                    <input type="text" id="name" th:field="*{name}" placeholder="请输入员工姓名" required/>
+                </div>
+                <div class="form-group">
+                    <label for="gender">性别:</label>
+                    <select id="gender" th:field="*{gender}" required>
+                        <option value="">请选择性别</option>
+                        <option th:each="g : ${genders}" th:value="${g}" th:text="${g.displayName}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="hireDate">入职日期:</label>
+                    <input type="date" id="hireDate" th:field="*{hireDate}" required/>
+                </div>
+                <div class="form-group">
+                    <label for="department">所属部门:</label>
+                    <select id="department" th:field="*{department}" required>
+                        <option value="">请选择部门</option>
+                        <option th:each="dept : ${departments}" th:value="${dept.id}" th:text="${dept.name}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="position">职位:</label>
+                    <select id="position" th:field="*{position}" required>
+                        <option value="">请选择职位</option>
+                        <option th:each="pos : ${positions}" th:value="${pos.id}" th:text="${pos.name}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="status">员工状态:</label>
+                    <select id="status" th:field="*{status}" required>
+                        <option value="">请选择状态</option>
+                        <option th:each="s : ${statuses}" th:value="${s}" th:text="${s.displayName}"></option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <a th:href="@{/employees}" class="btn btn-secondary">取消</a>
+                    <button type="submit" class="btn btn-success">保存员工</button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>

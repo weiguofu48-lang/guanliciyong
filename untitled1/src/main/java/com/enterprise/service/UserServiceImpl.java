@@ -24,13 +24,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(User user) {
-        // Assign default role to new users (e.g., ROLE_EMPLOYEE)
-        Optional<Role> defaultRole = roleRepository.findByName("ROLE_EMPLOYEE");
-        if (defaultRole.isPresent()) {
-            user.setRole(defaultRole.get());
-        } else {
-            throw new IllegalStateException("Default role ROLE_EMPLOYEE not found in the database.");
-        }
+        // 角色已经在Controller中设置，这里直接保存
         userRepository.save(user);
     }
 
@@ -73,5 +67,10 @@ public class UserServiceImpl implements UserService {
     public boolean authenticate(String username, String password) {
         Optional<User> userOptional = userRepository.findByUsername(username);
         return userOptional.map(user -> user.getPassword().equals(password)).orElse(false);
+    }
+
+    @Override
+    public Role getRoleById(Long id) {
+        return roleRepository.findById(id).orElse(null);
     }
 }

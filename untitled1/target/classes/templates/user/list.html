@@ -1,42 +1,58 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User Management</title>
+    <title>用户管理 - 企业管理系统</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
     <div class="container">
-        <h1>User Management</h1>
-
-        <!-- Success Message -->
-        <div th:if="${successMessage}" class="alert alert-success">
-            <p th:text="${successMessage}"></p>
+        <div class="header">
+            <h1>企业管理系统</h1>
+            <p>用户管理系统</p>
         </div>
+        
+        <div class="content">
+            <div class="page-header">
+                <h2 class="page-title">👤 用户管理</h2>
+                <div class="page-info">
+                    <span class="info-item">总用户数: <span id="user-count">0</span></span>
+                    <a th:href="@{/register}" class="btn btn-success">➕ 添加</a>
+                </div>
+            </div>
 
-        <!-- Error Message -->
-        <div th:if="${errorMessage}" class="alert alert-danger">
-            <p th:text="${errorMessage}"></p>
+            <!-- 成功消息 -->
+            <div th:if="${successMessage}" class="alert alert-success">
+                <p th:text="${successMessage}"></p>
+            </div>
+
+            <!-- 错误消息 -->
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <p th:text="${errorMessage}"></p>
+            </div>
+
+            <!-- 动态用户列表容器 -->
+            <div id="user-list-container">
+                <p>正在加载用户列表...</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <a th:href="@{/home}" class="btn btn-secondary">🏠 返回首页</a>
+            </div>
         </div>
-
-        <p><a th:href="@{/register}" class="btn">Add New User</a></p>
-
-        <!-- Container for the dynamic user list -->
-        <div id="user-list-container">
-            <p>Loading user list...</p>
-        </div>
-
-        <p style="margin-top: 20px;"><a th:href="@{/home}">Back to Home</a></p>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script th:inline="javascript">
         $(document).ready(function() {
-            // This script now ONLY loads the user list content.
-            // All other AJAX calls have been removed.
+            // 加载用户列表内容并更新计数
             $("#user-list-container").load(/*[[@{/users/content}]]*/, function(response, status, xhr) {
                 if (status == "error") {
-                    $(this).html("<p style='color: red;'>Failed to load user list: " + xhr.status + " " + xhr.statusText + "</p>");
+                    $(this).html("<p style='color: red;'>加载用户列表失败: " + xhr.status + " " + xhr.statusText + "</p>");
+                } else {
+                    // 更新用户数量
+                    var userCount = $(this).find('tbody tr').length;
+                    $('#user-count').text(userCount);
                 }
             });
         });

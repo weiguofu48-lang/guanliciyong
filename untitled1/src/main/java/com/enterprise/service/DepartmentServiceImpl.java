@@ -33,7 +33,23 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public void deleteById(Long id) {
-        departmentRepository.deleteById(id);
+        logger.info("Attempting to delete department with ID: {}", id);
+        try {
+            // 检查是否有员工引用该部门
+            Department department = departmentRepository.findById(id).orElse(null);
+            if (department == null) {
+                throw new RuntimeException("部门不存在");
+            }
+            
+            departmentRepository.deleteById(id);
+            logger.info("Successfully deleted department with ID: {}", id);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            logger.error("Cannot delete department with ID: {} due to foreign key constraints. Error: {}", id, e.getMessage());
+            throw new RuntimeException("无法删除部门，该部门下还有员工，请先删除相关员工");
+        } catch (Exception e) {
+            logger.error("Failed to delete department with ID: {}. Error: {}", id, e.getMessage());
+            throw new RuntimeException("删除部门失败: " + e.getMessage());
+        }
     }
 
     @Override

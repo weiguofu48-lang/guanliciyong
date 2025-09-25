@@ -1,39 +1,53 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页 - 企业管理系统</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Welcome!</h1>
-        <p>You have successfully logged in.</p>
-
-        <!-- Dashboard Section -->
-        <div id="dashboard-container">
-            <p>Loading dashboard...</p>
+        <div class="header">
+            <h1>企业管理系统</h1>
+            <p>企业管理系统</p>
+        </div>
+        
+        <div class="nav">
+            <a href="/dashboard" class="btn">📊 仪表板</a>
+            <a href="/employees" class="btn">👥 员工管理</a>
+            <a href="/departments" class="btn">🏢 部门管理</a>
+            <a href="/notifications" class="btn">🔔 通知管理</a>
+            <a href="/users" class="btn">👤 用户管理</a>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-danger">退出登录</button>
+            </form>
         </div>
 
-        <hr>
+        <div class="content">
+            <div class="dashboard-header">
+                <h2>🎉 欢迎使用企业管理系统</h2>
+                <p>您已成功登录系统，以下是系统概览</p>
+            </div>
 
-        <p><a th:href="@{/notifications}">View Notifications</a></p>
-        <p><a th:href="@{/employees}">View Employees</a></p>
-        <p><a th:href="@{/departments}">Manage Departments</a></p>
-        
-        <form th:action="@{/logout}" method="post" style="margin-top: 20px;">
-            <input type="submit" value="Sign Out" class="btn"/>
-        </form>
+            <!-- 仪表板区域 -->
+            <div id="dashboard-container">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>正在加载仪表板数据...</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Load dashboard content via AJAX, including the context path
+            // 通过AJAX加载仪表板内容，包含上下文路径
             $("#dashboard-container").load("/untitled1/dashboard/content", function(response, status, xhr) {
                 if (status == "error") {
                     var msg = "加载失败: ";
-                    $(this).html("<p style='color: red;'>" + msg + xhr.status + " " + xhr.statusText + "</p>");
+                    $(this).html("<div class='alert alert-danger'><h3>❌ 加载失败</h3><p>" + msg + xhr.status + " " + xhr.statusText + "</p></div>");
                 }
             });
         });

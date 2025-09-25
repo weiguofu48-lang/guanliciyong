@@ -29,6 +29,7 @@ com\enterprise\service\NotificationService.class
 com\enterprise\service\impl\PositionServiceImpl.class
 com\enterprise\service\impl\UserDetailsServiceImpl.class
 com\enterprise\service\EmployeeService.class
+com\enterprise\dto\PositionDTO.class
 com\enterprise\repository\RoleRepository.class
 com\enterprise\repository\DepartmentRepository.class
 com\enterprise\entity\User.class

@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <body>
     <div th:if="${users != null and not users.isEmpty()}">
-        <table>
+        <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Full Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Role</th>
-                    <th>Actions</th>
+                    <th>用户ID</th>
+                    <th>用户名</th>
+                    <th>真实姓名</th>
+                    <th>邮箱地址</th>
+                    <th>电话号码</th>
+                    <th>用户角色</th>
+                    <th>操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,18 +21,21 @@
                     <td th:text="${user.realName}"></td>
                     <td th:text="${user.email}"></td>
                     <td th:text="${user.phone}"></td>
-                    <td th:text="${user.role != null ? user.role.name : 'N/A'}"></td>
-                    <td>
-                        <a th:href="@{/users/edit/{id}(id=${user.id})}">Edit</a>
+                    <td th:text="${user.role != null ? user.role.name : '无'}"></td>
+                    <td class="actions">
+                        <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-secondary btn-sm">✏️ 编辑</a>
                         <a th:href="@{/users/delete/{id}(id=${user.id})}" 
-                           onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                           onclick="return confirm('确定要删除这个用户吗？');" 
+                           class="btn btn-danger btn-sm">删除</a>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <div th:if="${users == null or users.isEmpty()}">
-        <p>No users found in the database.</p>
+    <div th:if="${users == null or users.isEmpty()}" class="alert alert-danger">
+        <h3>📋 暂无用户数据</h3>
+        <p>数据库中暂无用户信息，请先添加用户。</p>
+        <a th:href="@{/register}" class="btn btn-success">➕ 添加</a>
     </div>
 </body>
 </html>

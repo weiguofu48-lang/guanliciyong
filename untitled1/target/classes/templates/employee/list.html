@@ -1,44 +1,69 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Employee List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>员工管理 - 企业管理系统</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Employee List</h1>
-        
-        <p><a th:href="@{/employees/add}" class="btn">Add New Employee</a></p>
-
-        <table th:if="${employees != null and not employees.isEmpty()}">
-            <thead>
-                <tr>
-                    <th>Employee ID</th>
-                    <th>Name</th>
-                    <th>Gender</th>
-                    <th>Hire Date</th>
-                    <th>Position</th>
-                    <th>Status</th>
-                    <th>Department</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="employee : ${employees}">
-                    <td th:text="${employee.employeeId}"></td>
-                    <td th:text="${employee.name}"></td>
-                    <td th:text="${employee.gender.displayName}"></td>
-                    <td th:text="${employee.hireDate}"></td>
-                    <td th:text="${employee.position.name}"></td>
-                    <td th:text="${employee.status.displayName}"></td>
-                    <td th:text="${employee.department.name}"></td>
-                </tr>
-            </tbody>
-        </table>
-        <div th:if="${employees == null or employees.isEmpty()}">
-            <p style="color: red; font-weight: bold;">No employee information found in the database.</p>
+        <div class="header">
+            <h1>企业管理系统</h1>
+            <p>员工管理系统</p>
         </div>
-        <p><a th:href="@{/home}">Back to Home</a></p>
+        
+        <div class="content">
+            <div class="page-header">
+                <h2 class="page-title">👥 员工管理</h2>
+                <div class="page-info">
+                    <span class="info-item">总员工数: <span th:text="${employees != null ? #lists.size(employees) : 0}">0</span></span>
+                    <a th:href="@{/employees/add}" class="btn btn-success">➕ 添加</a>
+                </div>
+            </div>
+
+            <table th:if="${employees != null and not employees.isEmpty()}" class="table">
+                <thead>
+                    <tr>
+                        <th>员工编号</th>
+                        <th>员工姓名</th>
+                        <th>性别</th>
+                        <th>所属部门</th>
+                        <th>职位</th>
+                        <th>工作状态</th>
+                        <th>入职日期</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="employee : ${employees}">
+                        <td th:text="${employee.employeeId}"></td>
+                        <td th:text="${employee.name}"></td>
+                        <td th:text="${employee.gender.displayName}"></td>
+                        <td th:text="${employee.department.name}"></td>
+                        <td th:text="${employee.position.name}"></td>
+                        <td th:text="${employee.status.displayName}"></td>
+                        <td th:text="${employee.hireDate}"></td>
+                        <td class="actions">
+                            <a th:href="@{/employees/edit/{id}(id=${employee.id})}" class="btn btn-secondary btn-sm">✏️ 编辑</a>
+                            <a th:href="@{/employees/delete/{id}(id=${employee.id})}" 
+                               onclick="return confirm('确定要删除这个员工吗？');" 
+                               class="btn btn-danger btn-sm">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div th:if="${employees == null or employees.isEmpty()}" class="alert alert-danger">
+                <h3>📋 暂无员工数据</h3>
+                <p>数据库中暂无员工信息，请先添加员工。</p>
+                <a th:href="@{/employees/add}" class="btn btn-success">➕ 添加</a>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <a th:href="@{/home}" class="btn btn-secondary">🏠 返回首页</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>

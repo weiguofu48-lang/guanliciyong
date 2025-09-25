@@ -1,5 +1,6 @@
 package com.enterprise.service;
 
+import com.enterprise.entity.Role;
 import com.enterprise.entity.User;
 import java.util.List;
 
@@ -11,4 +12,5 @@ public interface UserService {
     User getUserByUsername(String username);
     List<User> getAllUsers();
     boolean authenticate(String username, String password);
+    Role getRoleById(Long id);
 }

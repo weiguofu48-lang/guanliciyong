@@ -1,10 +1,80 @@
-<div class="dashboard-cards">
-    <div class="card">
-        <h3>Total Employees</h3>
-        <p th:text="${employeeCount}">0</p>
+<div class="dashboard-header">
+    <h2>📊 仪表板</h2>
+    <p>欢迎使用企业管理系统，以下是系统概览</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card employee-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-content">
+            <h3>员工总数</h3>
+            <div class="stat-number" th:text="${employeeCount}">0</div>
+            <div class="stat-label">名员工</div>
+        </div>
+        <div class="stat-trend">
+            <span class="trend-icon">📈</span>
+            <span class="trend-text">活跃</span>
+        </div>
     </div>
-    <div class="card">
-        <h3>Total Departments</h3>
-        <p th:text="${departmentCount}">0</p>
+    
+    <div class="stat-card department-card">
+        <div class="stat-icon">🏢</div>
+        <div class="stat-content">
+            <h3>部门总数</h3>
+            <div class="stat-number" th:text="${departmentCount}">0</div>
+            <div class="stat-label">个部门</div>
+        </div>
+        <div class="stat-trend">
+            <span class="trend-icon">📊</span>
+            <span class="trend-text">运行中</span>
+        </div>
+    </div>
+    
+    <div class="stat-card notification-card">
+        <div class="stat-icon">🔔</div>
+        <div class="stat-content">
+            <h3>通知数量</h3>
+            <div class="stat-number" th:text="${notificationCount ?: 0}">0</div>
+            <div class="stat-label">条通知</div>
+        </div>
+        <div class="stat-trend">
+            <span class="trend-icon">📢</span>
+            <span class="trend-text">最新</span>
+        </div>
+    </div>
+    
+    <div class="stat-card user-card">
+        <div class="stat-icon">👤</div>
+        <div class="stat-content">
+            <h3>用户总数</h3>
+            <div class="stat-number" th:text="${userCount ?: 0}">0</div>
+            <div class="stat-label">个用户</div>
+        </div>
+        <div class="stat-trend">
+            <span class="trend-icon">✅</span>
+            <span class="trend-text">在线</span>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-actions">
+    <h3>快速操作</h3>
+    <div class="action-buttons">
+        <a href="/employees" class="action-btn">
+            <span class="action-icon">👥</span>
+            <span class="action-text">员工管理</span>
+        </a>
+        <a href="/departments" class="action-btn">
+            <span class="action-icon">🏢</span>
+            <span class="action-text">部门管理</span>
+        </a>
+        <a href="/notifications" class="action-btn">
+            <span class="action-icon">🔔</span>
+            <span class="action-text">通知管理</span>
+        </a>
+        <a href="/users" class="action-btn">
+            <span class="action-icon">👤</span>
+            <span class="action-text">用户管理</span>
+        </a>
     </div>
 </div>

@@ -50,14 +50,15 @@ WHERE NOT EXISTS (SELECT 1 FROM t_user WHERE username = 'lisi');
 -- Create t_department table
 CREATE TABLE t_department (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE
+    name VARCHAR(100) NOT NULL UNIQUE,
+    description VARCHAR(500)
 );
 
 -- Insert example department data (if t_department is empty)
-INSERT IGNORE INTO t_department (name) VALUES ('研发部');
-INSERT IGNORE INTO t_department (name) VALUES ('市场部');
-INSERT IGNORE INTO t_department (name) VALUES ('人力资源部');
-INSERT IGNORE INTO t_department (name) VALUES ('财务部');
+INSERT IGNORE INTO t_department (name, description) VALUES ('研发部', '负责产品研发和技术创新');
+INSERT IGNORE INTO t_department (name, description) VALUES ('市场部', '负责市场推广和客户关系管理');
+INSERT IGNORE INTO t_department (name, description) VALUES ('人力资源部', '负责员工招聘、培训和绩效管理');
+INSERT IGNORE INTO t_department (name, description) VALUES ('财务部', '负责公司财务管理和会计核算');
 
 -- Create t_position table
 CREATE TABLE t_position (

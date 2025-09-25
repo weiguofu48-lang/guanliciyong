@@ -1,47 +1,93 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Notifications</title>
+    <title>通知管理 - 企业管理系统</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Notifications</h1>
-
-        <div sec:authorize="isAuthenticated()">
-            <p>Welcome, <span sec:authentication="name"></span>!</p>
-            <form th:action="@{/logout}" method="post">
-                <input type="submit" value="Sign Out" class="btn"/>
-            </form>
+        <div class="header">
+            <h1>企业管理系统</h1>
+            <p>通知管理系统</p>
         </div>
-
-        <h2>All Notifications</h2>
-        <div th:if="${notifications.isEmpty()}">
-            <p>No notifications yet.</p>
-        </div>
-        <div th:unless="${notifications.isEmpty()}">
-            <ul class="notification-list">
-                <li class="notification-item" th:each="notification : ${notifications}">
-                    <p th:text="${notification.message}"></p>
-                    <small th:text="${#temporals.format(notification.createdAt, 'yyyy-MM-dd HH:mm')}"></small>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Removed sec:authorize for Create New Notification form -->
-        <div class="notification-form">
-            <h2>Create New Notification</h2>
-            <form th:action="@{/notifications}" method="post">
-                <div class="form-group">
-                    <label for="message">Message:</label>
-                    <textarea id="message" name="message" rows="4" required></textarea>
+        
+        <div class="content">
+            <div class="page-header">
+                <h2 class="page-title">🔔 通知管理</h2>
+                <div class="page-info">
+                    <span class="info-item">总通知数: <span th:text="${notifications != null ? #lists.size(notifications) : 0}">0</span></span>
+                    <button onclick="showCreateForm()" class="btn btn-success">➕ 添加</button>
                 </div>
-                <input type="submit" value="Create Notification" class="btn">
-            </form>
-        </div>
+            </div>
 
-        <p><a href="/home">Back to Home</a></p>
+            <div sec:authorize="isAuthenticated()">
+                <p>欢迎您, <span sec:authentication="name"></span>!</p>
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="退出登录" class="btn btn-danger"/>
+                </form>
+            </div>
+
+            <h3>📋 所有通知</h3>
+            <div th:if="${notifications == null or notifications.isEmpty()}" class="alert alert-danger">
+                <h3>📋 暂无通知数据</h3>
+                <p>数据库中暂无通知信息，请先添加通知。</p>
+                <button onclick="showCreateForm()" class="btn btn-success">➕ 添加</button>
+            </div>
+            <div th:unless="${notifications == null or notifications.isEmpty()}">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>通知ID</th>
+                            <th>通知内容</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="notification : ${notifications}">
+                            <td th:text="${notification.id}"></td>
+                            <td class="description" th:text="${notification.message}"></td>
+                            <td th:text="${#temporals.format(notification.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                            <td class="actions">
+                                <a th:href="@{/notifications/delete/{id}(id=${notification.id})}" 
+                                   onclick="return confirm('确定要删除这个通知吗？');" 
+                                   class="btn btn-danger btn-sm">删除</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 创建新通知表单 -->
+            <div id="create-form" class="notification-form" style="display: none;">
+                <h3>📝 创建新通知</h3>
+                <form th:action="@{/notifications}" method="post">
+                    <div class="form-group">
+                        <label for="message">通知内容:</label>
+                        <textarea id="message" name="message" rows="4" required placeholder="请输入通知内容..."></textarea>
+                    </div>
+                    <div style="display: flex; gap: 15px;">
+                        <input type="submit" value="创建通知" class="btn btn-success">
+                        <button type="button" onclick="hideCreateForm()" class="btn btn-secondary">取消</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="/home" class="btn btn-secondary">🏠 返回首页</a>
+            </div>
+        </div>
     </div>
+
+    <script>
+        function showCreateForm() {
+            document.getElementById('create-form').style.display = 'block';
+        }
+        
+        function hideCreateForm() {
+            document.getElementById('create-form').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
